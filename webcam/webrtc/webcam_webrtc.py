@@ -10,11 +10,11 @@ import numpy as np
 
 
 # @st.cache_resource  # type: ignore
-def generate_label_colors(classes=80):
+def generate_label_colors(classes=26):
     return np.random.uniform(0, 255, size=(classes, 3))
 
 
-model = YOLO("yolov8n.pt")
+model = YOLO("/app/streamlit_app/weights/yolov8n_100epoch_.pt")
 COLORS = generate_label_colors()
 
 
