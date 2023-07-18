@@ -32,8 +32,8 @@ from ultralytics.yolo.engine.results import Boxes
 from ultralytics.yolo.data.utils import VID_FORMATS
 from ultralytics.yolo.utils.plotting import save_one_box
 
-from examples.multi_yolo_backend import MultiYolo
-from examples.utils import write_MOT_results
+from yolo_tracking.examples.multi_yolo_backend import MultiYolo
+from yolo_tracking.examples.utils import write_MOT_results
 
 from boxmot.utils import EXAMPLES
 
