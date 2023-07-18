@@ -13,8 +13,8 @@ model = YOLO("yolov8n.pt")
 
 
 # @st.cache_resource  # type: ignore
-def generate_label_colors(CLASSES):
-    return np.random.uniform(0, 255, size=(len(CLASSES), 3))
+def generate_label_colors(classes):
+    return np.random.uniform(0, 255, size=(len(classes), 3))
 
 
 def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
@@ -25,12 +25,12 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
     boxes = preds[0].boxes.boxes
     classes = preds[0].names
 
-    COLORS = generate_label_colors(classes.keys())
+    color_list = generate_label_colors(classes)
 
     for xmin, ymin, xmax, ymax, score, label in boxes:
         xmin, ymin, xmax, ymax = map(int, [xmin, ymin, xmax, ymax])
         label = classes[int(label.item())]
-        color = COLORS[int(label.item())]
+        color = color_list[int(label.item())]
         cv2.rectangle(image, (xmin, ymin), (xmax, ymax), color, 2)
         cv2.putText(
             image,
