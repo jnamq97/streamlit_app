@@ -21,18 +21,18 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
 
     cv2.rectangle(image, (30, 30), (100, 100), (0, 255, 0), 2)
 
-    for xmin, ymin, xmax, ymax, score, label in boxes:
-        label = classes[int(label.item())]
-        cv2.rectangle(image, (xmin, ymin), (xmax, ymax), (255, 0, 0), 2)
-        cv2.putText(
-            image,
-            label,
-            (xmin, ymin - 10),
-            cv2.FONT_HERSHEY_SIMPLEX,
-            0.9,
-            (0, 255, 0),
-            2,
-        )
+    # for xmin, ymin, xmax, ymax, score, label in boxes:
+    #     label = classes[int(label.item())]
+    #     cv2.rectangle(image, (xmin, ymin), (xmax, ymax), (255, 0, 0), 2)
+    #     cv2.putText(
+    #         image,
+    #         label,
+    #         (xmin, ymin - 10),
+    #         cv2.FONT_HERSHEY_SIMPLEX,
+    #         0.9,
+    #         (0, 255, 0),
+    #         2,
+    #     )
 
     return av.VideoFrame.from_ndarray(image, format="bgr24")
 
