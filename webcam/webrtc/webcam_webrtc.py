@@ -14,13 +14,13 @@ model = YOLO("/app/streamlit_app/weights/yolov8n_100epoch_.pt")
 def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
     image = frame.to_ndarray(format="bgr24")
     h, w = image.shape[:2]
-    results = model(image)
-    print(results)
-    boxes = results.xyxy[0].numpy()
-    labels = results.names[0]
-    scores = results.xyxy[0][:, 4].numpy()
-    for box, label, score in zip(boxes, labels, scores):
-        xmin, ymin, xmax, ymax = box
+    preds = model(image)
+
+    boxes = preds[0].boxes.boxes
+    classes = preds[0].names
+
+    for xmin, ymin, xmax, ymax, score, label in boxes:
+        label = classes[int(label.item())]
         cv2.rectangle(image, (xmin, ymin), (xmax, ymax), (0, 255, 0), 2)
         cv2.putText(
             image,
