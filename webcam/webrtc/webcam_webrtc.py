@@ -8,31 +8,31 @@ import av
 from ultralytics import YOLO
 
 
-model = YOLO("yolov8n.pt")
+# model = YOLO("yolov8n.pt")
 
 
 def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
     image = frame.to_ndarray(format="bgr24")
     h, w = image.shape[:2]
-    preds = model(image)
+    # preds = model(image)
 
-    boxes = preds[0].boxes.boxes
-    classes = preds[0].names
+    # boxes = preds[0].boxes.boxes
+    # classes = preds[0].names
 
     cv2.rectangle(image, (30, 30), (100, 100), (0, 255, 0), 2)
 
-    for xmin, ymin, xmax, ymax, score, label in boxes:
-        label = classes[int(label.item())]
-        cv2.rectangle(image, (30, 30), (100, 100), (0, 255, 0), 2)
-        cv2.putText(
-            image,
-            label,
-            (xmin, ymin - 10),
-            cv2.FONT_HERSHEY_SIMPLEX,
-            0.9,
-            (0, 255, 0),
-            2,
-        )
+    # for xmin, ymin, xmax, ymax, score, label in boxes:
+    #     label = classes[int(label.item())]
+    #     cv2.rectangle(image, (xmin, ymin), (xmax, ymax), (0, 255, 0), 2)
+    #     cv2.putText(
+    #         image,
+    #         label,
+    #         (xmin, ymin - 10),
+    #         cv2.FONT_HERSHEY_SIMPLEX,
+    #         0.9,
+    #         (0, 255, 0),
+    #         2,
+    #     )
 
     return av.VideoFrame.from_ndarray(image, format="bgr24")
 
