@@ -15,6 +15,7 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
     image = frame.to_ndarray(format="bgr24")
     h, w = image.shape[:2]
     results = model(image)
+    print(results)
     boxes = results.xyxy[0].numpy()
     labels = results.names[0]
     scores = results.xyxy[0][:, 4].numpy()
