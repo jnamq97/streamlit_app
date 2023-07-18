@@ -1,0 +1,13 @@
+train: /opt/ml/final_project/datasets/train/images
+val: /opt/ml/final_project/datasets/train/images
+test: ../test/images
+
+nc: 26
+names: ['barricade', 'bench', 'bicycle', 'bollard', 'bus', 'car', 'carrier', 'chair', 'dog', 'fire_hydrant', 'kiosk', 'motorcycle', 'movable_signage', 'person', 'pole', 'potted_plant', 'power_controller', 'stop', 'stroller', 'table', 'traffic_light', 'traffic_light_controller', 'traffic_sign', 'tree_trunk', 'truck', 'wheelchair']
+
+roboflow:
+  workspace: namkyo0724-gmail-com
+  project: yolo-17hpq
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/namkyo0724-gmail-com/yolo-17hpq/dataset/1
