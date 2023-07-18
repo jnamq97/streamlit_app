@@ -20,10 +20,9 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
     classes = preds[0].names
 
     for xmin, ymin, xmax, ymax, score, label in boxes:
+        xmin, ymin, xmax, ymax = map(int, [xmin, ymin, xmax, ymax])
         label = classes[int(label.item())]
-        cv2.rectangle(
-            image, (int(xmin), int(ymin)), (int(xmax), int(ymax)), (255, 0, 0), 2
-        )
+        cv2.rectangle(image, (xmin, ymin), (xmax, ymax), (255, 0, 0), 2)
         cv2.putText(
             image,
             label,
