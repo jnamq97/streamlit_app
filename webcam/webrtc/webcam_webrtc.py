@@ -19,6 +19,8 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
     boxes = preds[0].boxes.boxes
     classes = preds[0].names
 
+    cv2.rectangle(image, (30, 30), (100, 100), (0, 255, 0), 2)
+
     for xmin, ymin, xmax, ymax, score, label in boxes:
         label = classes[int(label.item())]
         cv2.rectangle(image, (30, 30), (100, 100), (0, 255, 0), 2)
