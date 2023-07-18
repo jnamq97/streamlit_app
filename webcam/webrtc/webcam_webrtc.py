@@ -14,10 +14,10 @@ model = YOLO("yolov8n.pt")
 def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
     image = frame.to_ndarray(format="bgr24")
     h, w = image.shape[:2]
-    # preds = model(image)
+    preds = model(image)
 
-    # boxes = preds[0].boxes.boxes
-    # classes = preds[0].names
+    boxes = preds[0].boxes.boxes
+    classes = preds[0].names
 
     cv2.rectangle(image, (30, 30), (100, 100), (0, 255, 0), 2)
 
