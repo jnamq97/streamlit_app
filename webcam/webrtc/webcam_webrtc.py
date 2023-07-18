@@ -8,7 +8,7 @@ import av
 from ultralytics import YOLO
 
 
-# model = YOLO("yolov8n.pt")
+model = YOLO("yolov8n.pt")
 
 
 def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
