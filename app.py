@@ -7,7 +7,7 @@ import os
 import cv2
 
 # from webcam.socket.webcam_server import main as webcam_main
-from webcam.webrtc.webcam_webrtc import video_frame_callback, webrtc_init
+from webcam.webrtc.webcam_webrtc import *
 from streamlit_webrtc import webrtc_streamer
 
 
