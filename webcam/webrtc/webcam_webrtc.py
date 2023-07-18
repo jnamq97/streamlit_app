@@ -29,12 +29,12 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
 
     for xmin, ymin, xmax, ymax, score, label in boxes:
         xmin, ymin, xmax, ymax = map(int, [xmin, ymin, xmax, ymax])
-        label = classes[int(label.item())]
+        label_name = classes[int(label.item())]
         color = color_list[int(label.item())]
         cv2.rectangle(image, (xmin, ymin), (xmax, ymax), color, 2)
         cv2.putText(
             image,
-            label,
+            label_name,
             (xmin, ymin - 10),
             cv2.FONT_HERSHEY_SIMPLEX,
             0.9,
