@@ -12,7 +12,7 @@ import numpy as np
 model = YOLO("yolov8n.pt")
 
 
-@st.cache_resource  # type: ignore
+# @st.cache_resource  # type: ignore
 def generate_label_colors(CLASSES):
     return np.random.uniform(0, 255, size=(len(CLASSES), 3))
 
