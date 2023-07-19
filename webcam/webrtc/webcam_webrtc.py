@@ -74,9 +74,9 @@ def webrtc_init():
         async_processing=True,
         key="apas",
     )
-    while ctx.state.playing:
-        with lock:
-            warning = warning_message["warning"]
-        if warning != 3:
-            continue
-        st.text("warning red !!!")
+    # while ctx.state.playing:
+    #     with lock:
+    #         warning = warning_message["warning"]
+    #     if warning != 3:
+    #         continue
+    #     st.text("warning red !!!")
