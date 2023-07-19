@@ -16,5 +16,6 @@ twilio
 matplotlib
 ultralytics
 py-cpuinfo
+gtts
 
 git+https://github.com/mikel-brostrom/yolo_tracking.git
