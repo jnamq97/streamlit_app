@@ -62,7 +62,7 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
         # )
         # max_warning = max(max_warning, warning)
 
-    with lock:
+        # with lock:
         # warning_message["warning"] = warning
         # detected_dict["boxes"] = box_list
         number["count"] = number
@@ -93,9 +93,9 @@ def webrtc_init():
         #     warning = warning_message["warning"]
         # if warning != 3:
         #     continue
-        with lock:
-            num = number["count"]
-            text_place.text(num)
+        # with lock:
+        num = number["count"]
+        text_place.text(num)
         #     detected = detected_dict["boxes"]
         # if detected is None:
         #     continue
