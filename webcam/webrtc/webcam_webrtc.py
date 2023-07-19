@@ -46,10 +46,10 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
             color,
             2,
         )
-        warning = max(
-            warning_state_Algorithm(xmin, ymin, xmax, ymax, int(label.item()), w, h),
-            warning,
-        )
+        # warning = max(
+        #     warning_state_Algorithm(xmin, ymin, xmax, ymax, int(label.item()), w, h),
+        #     warning,
+        # )
 
     # with lock:
     #     warning_message["warning"] = warning
