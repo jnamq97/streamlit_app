@@ -25,9 +25,9 @@ COLORS = generate_label_colors()
 
 def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
     image = frame.to_ndarray(format="bgr24")
-    h, w = image[0].orig_shape
-    preds = model(image)
 
+    preds = model(image)
+    h, w = preds[0].orig_shape
     boxes = preds[0].boxes.boxes
     classes = preds[0].names
 
