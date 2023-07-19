@@ -95,7 +95,7 @@ def webrtc_init():
         #     continue
         with lock:
             num = number["count"]
-        text_place.text(num)
+            text_place.text(num)
         #     detected = detected_dict["boxes"]
         # if detected is None:
         #     continue
