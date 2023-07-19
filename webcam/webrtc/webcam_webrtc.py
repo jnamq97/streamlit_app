@@ -20,8 +20,9 @@ model = YOLO("/app/streamlit_app/weights/yolov8n_100epoch_.pt")
 COLORS = generate_label_colors()
 
 lock = threading.Lock()
-warning_message = {"warning": None}
-detected_dict = {"boxes": None}
+# warning_message = {"warning": None}
+# detected_dict = {"boxes": None}
+number = {"count": None}
 
 
 def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
@@ -34,6 +35,7 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
 
     max_warning = 0
     box_list = []
+    number = 0
     for xmin, ymin, xmax, ymax, score, label in boxes:
         xmin, ymin, xmax, ymax = map(int, [xmin, ymin, xmax, ymax])
         label_name = classes[int(label.item())]
@@ -48,7 +50,8 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
             color,
             2,
         )
-        box_list.append((label_name))
+        # box_list.append((label_name))
+        number += 1
 
         # warning = max(
         #     warning_state_Algorithm(xmin, ymin, xmax, ymax, int(label.item()), h, w),
@@ -61,7 +64,8 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
 
     with lock:
         # warning_message["warning"] = warning
-        detected_dict["boxes"] = box_list
+        # detected_dict["boxes"] = box_list
+        number["count"] = number
 
     return av.VideoFrame.from_ndarray(image, format="bgr24")
 
@@ -90,7 +94,9 @@ def webrtc_init():
         # if warning != 3:
         #     continue
         with lock:
-            detected = detected_dict["boxes"]
-        if detected is None:
-            continue
-        text_place.text(f"{detected}")
+            num = number["count"]
+        text_place.text(num)
+        #     detected = detected_dict["boxes"]
+        # if detected is None:
+        #     continue
+        # text_place.text(f"{detected}")
