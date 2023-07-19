@@ -19,11 +19,12 @@ def generate_label_colors(classes=26):
 model = YOLO("/app/streamlit_app/weights/yolov8n_100epoch_.pt")
 COLORS = generate_label_colors()
 
-lock = threading.Lock()
-warning_message = {"warning": None}
+# lock = threading.Lock()
+# warning_message = {"warning": None}
+# detected_dict = {"boxes": None}
 
 
-def video_frame_callback(frame_number, frame: av.VideoFrame) -> av.VideoFrame:
+def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
     image = frame.to_ndarray(format="bgr24")
 
     preds = model(image)
@@ -46,16 +47,17 @@ def video_frame_callback(frame_number, frame: av.VideoFrame) -> av.VideoFrame:
             color,
             2,
         )
-        if frame_number % 5 == 0:
-            warning = max(
-                warning_state_Algorithm(
-                    xmin, ymin, xmax, ymax, int(label.item()), w, h
-                ),
-                warning,
-            )
 
-    with lock:
-        warning_message["warning"] = warning
+        # warning = max(
+        #     warning_state_Algorithm(xmin, ymin, xmax, ymax, int(label.item()), h, w),
+        #     warning,
+        # )
+        _, warning = warning_state_Algorithm(
+            xmin, ymin, xmax, ymax, int(label.item()), h, w
+        )
+
+    # with lock:
+    #     warning_message["warning"] = warning
 
     return av.VideoFrame.from_ndarray(image, format="bgr24")
 
@@ -77,9 +79,14 @@ def webrtc_init():
         async_processing=True,
         key="apas",
     )
-    while ctx.state.playing:
-        with lock:
-            warning = warning_message["warning"]
-        if warning != 3:
-            continue
-        st.text("warning red !!!")
+    # text_place = st.empty()
+    # while ctx.state.playing:
+    #     # with lock:
+    #     #     warning = warning_message["warning"]
+    #     # if warning != 3:
+    #     #     continue
+    #     with lock:
+    #         detected = detected_dict["boxes"]
+    #     if df:
+    #         continue
+    #     text_place.text("warning red !!!")
