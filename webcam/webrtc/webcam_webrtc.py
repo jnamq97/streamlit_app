@@ -65,7 +65,7 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
         # with lock:
         # warning_message["warning"] = warning
         # detected_dict["boxes"] = box_list
-        number["count"] = number
+    number["count"] = number
 
     return av.VideoFrame.from_ndarray(image, format="bgr24")
 
