@@ -136,6 +136,7 @@ def webrtc(token):
                 st.text("IIIIIIIIIN")
                 dangers = obj_contatiner["obj"].pop()
                 # obj_contatiner["obj"] = None
+                st.text("NNNNNOOOONEEE")
             temp += 1
             if dangers is None:
                 continue
