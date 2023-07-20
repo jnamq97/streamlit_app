@@ -54,10 +54,9 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
                     color,
                     2,
                 )
-                # danger.append(label_name)
-    with lock:
-        # img_container["img"] = image
-        obj_contatiner["obj"] = danger
+                danger.append(label_name)
+                obj_contatiner["obj"] = danger
+
     # else:
     #     obj_contatiner["obj"] = None
 
