@@ -133,10 +133,10 @@ def webrtc_init():
             with lock:
                 # image = img_container["img"]
                 dangers = obj_contatiner["obj"]
-                obj_contatiner["obj"] = None
+                # obj_contatiner["obj"] = None
             temp += 1
             if dangers is None:
-                pass
+                continue
             elif len(dangers) > 0:
                 autoplay_audio(recorded_audio_file)
                 text_place.text(f"warning! : {dangers}")
