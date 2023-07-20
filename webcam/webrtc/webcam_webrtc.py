@@ -63,6 +63,8 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
         with lock:
             img_container["img"] = image
             obj_contatiner["obj"] = danger
+    else:
+        obj_contatiner["obj"] = None
 
     # if len(boxes) > 1:
     #     # st.audio(recorded_audio_file)
