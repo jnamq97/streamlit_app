@@ -65,6 +65,7 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
             obj_contatiner["obj"] = danger
     else:
         obj_contatiner["obj"] = None
+        return av.VideoFrame.from_ndarray(image, format="bgr24")
 
     # if len(boxes) > 1:
     #     # st.audio(recorded_audio_file)
