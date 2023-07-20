@@ -59,7 +59,7 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
             2,
         )
         danger.append(label_name)
-    if boxes:
+    if len(boxes) > 0:
         with lock:
             img_container["img"] = image
             obj_contatiner["obj"] = danger
