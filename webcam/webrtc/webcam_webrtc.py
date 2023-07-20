@@ -21,18 +21,12 @@ def generate_label_colors(classes=26):
     return np.random.uniform(0, 255, size=(classes, 3))
 
 
-model = YOLO("/app/streamlit_app/weights/yolov8n_100epoch_.pt")
 COLORS = generate_label_colors()
 event_triggered = True
 box_len = 0
 lock = threading.Lock()
 # img_container = {"img": None}
-obj_contatiner = {"obj": [[] * 1000]}
-
-
-def change_box_len():
-    global box_len
-    box_len += 1
+obj_contatiner = {"obj": [[] * 100000]}
 
 
 def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
@@ -103,6 +97,8 @@ def autoplay_audio(file_path: str):
 
 
 def webrtc_init():
+    global model
+    model = YOLO("/app/streamlit_app/weights/yolov8n_100epoch_.pt")
     os.environ["TWILIO_ACCOUNT_SID"] = st.secrets["TWILIO_ACCOUNT_SID"]
     os.environ["TWILIO_AUTH_TOKEN"] = st.secrets["TWILIO_AUTH_TOKEN"]
 
