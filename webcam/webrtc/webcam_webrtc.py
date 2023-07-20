@@ -58,12 +58,11 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
             color,
             2,
         )
-        if warning_state_Algorithm(xmin, ymin, xmax, ymax, h, w) == 3:
-            danger.append(label_name)
+        danger = warning_state_Algorithm(xmin, ymin, xmax, ymax, h, w)
 
     with lock:
         img_container["img"] = image
-        # obj_contatiner["obj"] = danger
+        obj_contatiner["obj"] = danger
 
     # if len(boxes) > 1:
     #     # st.audio(recorded_audio_file)
@@ -126,10 +125,11 @@ def webrtc_init():
     while self_ctx.state.playing:
         with lock:
             image = img_container["img"]
-            # dangers = obj_contatiner["obj"]
+            dangers = obj_contatiner["obj"]
             temp += 1
-        # if dangers is None:
-        #     continue
-        text_place.text(temp)
-        if temp % 10 == 0:
+        if dangers is None:
+            continue
+
+        if temp % 20 == 0:
             autoplay_audio(recorded_audio_file)
+            text_place.text(f"warning! : {dangers}")
