@@ -136,7 +136,7 @@ def webrtc_init():
                 obj_contatiner["obj"] = None
             temp += 1
             if dangers is None:
-                continue
+                pass
             elif len(dangers) > 0:
                 autoplay_audio(recorded_audio_file)
                 text_place.text(f"warning! : {dangers}")
