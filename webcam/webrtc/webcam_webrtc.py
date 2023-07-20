@@ -126,6 +126,7 @@ def webrtc(token):
     audio_file = open(recorded_audio_file, "rb")
     audio_bytes = audio_file.read()
 
+    dangers = None
     while self_ctx.state.playing:
         temp += 1
         if temp % 2000 == 0:
