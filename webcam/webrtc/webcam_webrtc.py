@@ -131,8 +131,8 @@ def webrtc_init():
                 image = img_container["img"]
                 dangers = obj_contatiner["obj"]
                 temp += 1
-            # if dangers is None:
-            #     continue
-            if dangers is not None and len(dangers) > 0:
+            if dangers is None:
+                continue
+            elif len(dangers) > 0:
                 autoplay_audio(recorded_audio_file)
                 text_place.text(f"warning! : {dangers}")
