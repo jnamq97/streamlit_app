@@ -26,7 +26,7 @@ event_triggered = True
 box_len = 0
 lock = threading.Lock()
 # img_container = {"img": None}
-obj_contatiner = {"obj": }
+obj_contatiner = {}
 
 
 def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
@@ -98,7 +98,7 @@ def autoplay_audio(file_path: str):
 
 def webrtc_init():
     global model, obj_contatiner
-    obj_contatiner["obj"] = [[]for _ in range(10000)]
+    obj_contatiner["obj"] = [[] for _ in range(10000)]
     model = YOLO("/app/streamlit_app/weights/yolov8n_100epoch_.pt")
     os.environ["TWILIO_ACCOUNT_SID"] = st.secrets["TWILIO_ACCOUNT_SID"]
     os.environ["TWILIO_AUTH_TOKEN"] = st.secrets["TWILIO_AUTH_TOKEN"]
