@@ -39,8 +39,8 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
     # boxes = preds[0].boxes.boxes
     # classes = preds[0].names
 
-    with lock:
-        img_container["img"] = image
+    # with lock:
+    #     img_container["img"] = image
 
     # for xmin, ymin, xmax, ymax, score, label in boxes:
     #     xmin, ymin, xmax, ymax = map(int, [xmin, ymin, xmax, ymax])
