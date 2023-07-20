@@ -58,7 +58,7 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
             color,
             2,
         )
-        danger = warning_state_Algorithm(xmin, ymin, xmax, ymax, h, w)
+        danger = 3
 
     with lock:
         img_container["img"] = image
