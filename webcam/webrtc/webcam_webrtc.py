@@ -100,6 +100,7 @@ def webrtc_init():
     global model, obj_contatiner
     model = YOLO("/app/streamlit_app/weights/yolov8n_100epoch_.pt")
     obj_contatiner["obj"] = [[] * 10000000]
+    st.text("TTTTTTTTTEST")
     os.environ["TWILIO_ACCOUNT_SID"] = st.secrets["TWILIO_ACCOUNT_SID"]
     os.environ["TWILIO_AUTH_TOKEN"] = st.secrets["TWILIO_AUTH_TOKEN"]
 
@@ -132,6 +133,7 @@ def webrtc(token):
         if temp % 2000 == 0:
             with lock:
                 # image = img_container["img"]
+                st.text("IIIIIIIIIN")
                 dangers = obj_contatiner["obj"].pop()
                 # obj_contatiner["obj"] = None
             temp += 1
