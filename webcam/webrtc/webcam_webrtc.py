@@ -112,18 +112,19 @@ def webrtc(token):
     while self_ctx.state.playing:
         temp += 1
         if temp % 500 == 0:
-            with lock:
-                # image = img_container["img"]
-                try:
+            try:
+                with lock:
+                    # image = img_container["img"]
                     dangers = obj_contatiner["obj"].pop()
-                except:
-                    dangers = None
+            except:
+                dangers = []
                 # obj_contatiner["obj"] = None
             temp += 1
-            if dangers is None:
-                continue
-            elif len(dangers) > 0:
+            text_place.text(f"warning! : {dangers}")
+            # if dangers is None:
+            #     continue
+            if len(dangers) > 0:
                 autoplay_audio(recorded_audio_file)
-                text_place.text(f"warning! : {dangers}")
+
         # elif temp < 2000:
         #     obj_contatiner["obj"].append(None)
