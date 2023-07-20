@@ -55,7 +55,7 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
             )
             danger.append(label_name)
         with lock:
-            obj_contatiner["obj"].append(danger)
+            obj_contatiner["obj"] = danger
 
     return av.VideoFrame.from_ndarray(image, format="bgr24")
 
