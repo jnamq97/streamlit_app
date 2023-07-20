@@ -26,7 +26,7 @@ event_triggered = True
 box_len = 0
 lock = threading.Lock()
 # img_container = {"img": None}
-obj_contatiner = {"obj": None}
+obj_contatiner = {"obj": []}
 
 
 def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
@@ -54,8 +54,8 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
                 2,
             )
             danger.append(label_name)
-    with lock:
-        obj_contatiner["obj"] = danger
+        with lock:
+            obj_contatiner["obj"].append(danger)
 
     return av.VideoFrame.from_ndarray(image, format="bgr24")
 
@@ -114,7 +114,10 @@ def webrtc(token):
         if temp % 500 == 0:
             with lock:
                 # image = img_container["img"]
-                dangers = obj_contatiner["obj"]
+                try:
+                    dangers = obj_contatiner["obj"].pop()
+                except:
+                    dangers = None
                 # obj_contatiner["obj"] = None
             temp += 1
             if dangers is None:
