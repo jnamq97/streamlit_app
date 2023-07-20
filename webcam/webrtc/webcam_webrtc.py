@@ -59,9 +59,9 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
             obj_contatiner["obj"].append(danger)
     # else:
     #     obj_contatiner["obj"] = None
-    # else:
-    #     with lock:
-    #         obj_contatiner["obj"] = None
+    else:
+        with lock:
+            obj_contatiner["obj"].append(danger)
 
     # if len(boxes) > 1:
     #     # st.audio(recorded_audio_file)
