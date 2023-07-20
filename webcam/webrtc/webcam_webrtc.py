@@ -42,20 +42,20 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
     with lock:
         img_container["img"] = image
 
-    for xmin, ymin, xmax, ymax, score, label in boxes:
-        xmin, ymin, xmax, ymax = map(int, [xmin, ymin, xmax, ymax])
-        label_name = classes[int(label.item())]
-        color = COLORS[int(label.item())]
-        cv2.rectangle(image, (xmin, ymin), (xmax, ymax), color, 2)
-        cv2.putText(
-            image,
-            label_name,
-            (xmin, ymin - 10),
-            cv2.FONT_HERSHEY_SIMPLEX,
-            0.9,
-            color,
-            2,
-        )
+    # for xmin, ymin, xmax, ymax, score, label in boxes:
+    #     xmin, ymin, xmax, ymax = map(int, [xmin, ymin, xmax, ymax])
+    #     label_name = classes[int(label.item())]
+    #     color = COLORS[int(label.item())]
+    #     cv2.rectangle(image, (xmin, ymin), (xmax, ymax), color, 2)
+    #     cv2.putText(
+    #         image,
+    #         label_name,
+    #         (xmin, ymin - 10),
+    #         cv2.FONT_HERSHEY_SIMPLEX,
+    #         0.9,
+    #         color,
+    #         2,
+    #     )
 
     # if len(boxes) > 1:
     #     # st.audio(recorded_audio_file)
