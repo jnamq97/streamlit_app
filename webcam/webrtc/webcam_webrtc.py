@@ -94,6 +94,7 @@ def webrtc_init():
     text_place = st.empty()
     while ctx.state.playing:
         with lock:
+            image = img_container["img"]
             temp += 1
         text_place.text(temp)
     #     warning = warning_message["warning"]
