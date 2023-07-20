@@ -26,7 +26,7 @@ COLORS = generate_label_colors()
 event_triggered = True
 box_len = 0
 lock = threading.Lock()
-img_container = {"img": None}
+# img_container = {"img": None}
 obj_contatiner = {"obj": None}
 
 
@@ -61,8 +61,9 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
                     2,
                 )
                 danger.append(label_name)
-            img_container["img"] = image
+            # img_container["img"] = image
             obj_contatiner["obj"] = danger
+
     # else:
     #     with lock:
     #         obj_contatiner["obj"] = None
@@ -120,7 +121,7 @@ def webrtc_init():
 
     temp = 0
     text_place = st.empty()
-    audio_place = st.empty()
+    # audio_place = st.empty()
     recorded_audio_file = "/app/streamlit_app/webcam/webrtc/output.mp3"
     audio_file = open(recorded_audio_file, "rb")
     audio_bytes = audio_file.read()
@@ -129,9 +130,10 @@ def webrtc_init():
         temp += 1
         if temp % 40 == 0:
             with lock:
-                image = img_container["img"]
+                # image = img_container["img"]
                 dangers = obj_contatiner["obj"]
-                temp += 1
+                obj_contatiner["obj"] = None
+            temp += 1
             if dangers is None:
                 continue
             elif len(dangers) > 0:
