@@ -12,6 +12,7 @@ from pydub import AudioSegment
 from pydub.playback import play
 import threading
 import base64
+import time
 
 def generate_label_colors(classes=26):
     return np.random.uniform(0, 255, size=(classes, 3))
@@ -68,7 +69,8 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
 #     audio = AudioSegment.from_file(recorded_audio_file)
 #     play(audio)
 
-def autoplay_audio(file_path: str, place):
+def autoplay_audio(file_path: str):
+    audio_place = st.empty()
     with open(file_path, "rb") as f:
         data = f.read()
         b64 = base64.b64encode(data).decode()
@@ -77,10 +79,12 @@ def autoplay_audio(file_path: str, place):
             <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
             </audio>
             """
-        place.markdown(
+        audio_place.markdown(
             md,
             unsafe_allow_html=True,
         )
+    time.sleep(2)
+    audio_place.empty()
 
 def webrtc_init():
     os.environ["TWILIO_ACCOUNT_SID"] = st.secrets["TWILIO_ACCOUNT_SID"]
@@ -114,6 +118,6 @@ def webrtc_init():
             temp += 1
         text_place.text(temp)
         if temp % 10 == 0:
-            autoplay_audio(recorded_audio_file, audio_place)
+            autoplay_audio(recorded_audio_file)
 
 
