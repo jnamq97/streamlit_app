@@ -6,14 +6,12 @@ from twilio.rest import Client
 import streamlit as st
 from ultralytics import YOLO
 import numpy as np
-
 # for audio
 import av
 from pydub import AudioSegment
 from pydub.playback import play
 import threading
 import base64
-
 
 def generate_label_colors(classes=26):
     return np.random.uniform(0, 255, size=(classes, 3))
@@ -26,11 +24,10 @@ box_len = 0
 lock = threading.Lock()
 img_container = {"img": None}
 
-
 def change_box_len():
     global box_len
     box_len += 1
-
+    
 
 def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
     image = frame.to_ndarray(format="bgr24")
@@ -41,7 +38,7 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
 
     with lock:
         img_container["img"] = image
-
+        
     for xmin, ymin, xmax, ymax, score, label in boxes:
         xmin, ymin, xmax, ymax = map(int, [xmin, ymin, xmax, ymax])
         label_name = classes[int(label.item())]
@@ -71,7 +68,6 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
 #     audio = AudioSegment.from_file(recorded_audio_file)
 #     play(audio)
 
-
 def autoplay_audio(file_path: str, place):
     with open(file_path, "rb") as f:
         data = f.read()
@@ -85,7 +81,6 @@ def autoplay_audio(file_path: str, place):
             md,
             unsafe_allow_html=True,
         )
-
 
 def webrtc_init():
     os.environ["TWILIO_ACCOUNT_SID"] = st.secrets["TWILIO_ACCOUNT_SID"]
@@ -105,11 +100,12 @@ def webrtc_init():
         key="apas",
     )
 
+
     temp = 0
     text_place = st.empty()
     audio_place = st.empty()
     recorded_audio_file = "/app/streamlit_app/webcam/webrtc/output.mp3"
-    audio_file = open(recorded_audio_file, "rb")
+    audio_file = open(recorded_audio_file,'rb')
     audio_bytes = audio_file.read()
 
     while self_ctx.state.playing:
@@ -119,3 +115,5 @@ def webrtc_init():
         text_place.text(temp)
         if temp % 10 == 0:
             autoplay_audio(recorded_audio_file, audio_place)
+
+
