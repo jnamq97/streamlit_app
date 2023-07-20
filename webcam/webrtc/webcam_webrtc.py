@@ -128,7 +128,7 @@ def webrtc_init():
 
     while self_ctx.state.playing:
         temp += 1
-        if temp % 40 == 0:
+        if temp % 60 == 0:
             with lock:
                 # image = img_container["img"]
                 dangers = obj_contatiner["obj"]
