@@ -27,7 +27,7 @@ event_triggered = True
 box_len = 0
 lock = threading.Lock()
 # img_container = {"img": None}
-obj_contatiner = {"obj": None}
+obj_contatiner = {"obj": [None]}
 
 
 def change_box_len():
@@ -42,9 +42,7 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
 
     boxes = preds[0].boxes.boxes
     classes = preds[0].names
-    danger = [
-        [None],
-    ]
+    danger = []
 
     if len(boxes) > 0:
         with lock:
@@ -64,7 +62,7 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
                 )
                 danger.append(label_name)
             # img_container["img"] = image
-            obj_contatiner["obj"].append([danger])
+            obj_contatiner["obj"].append(danger)
     # else:
     #     obj_contatiner["obj"] = None
     # else:
