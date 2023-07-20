@@ -132,7 +132,10 @@ def webrtc_init():
         if temp % 2000 == 0:
             with lock:
                 # image = img_container["img"]
-                dangers = obj_contatiner["obj"].pop()
+                try:
+                    dangers = obj_contatiner["obj"].pop()
+                except:
+                    continue
                 # obj_contatiner["obj"] = None
             temp += 1
             if dangers is None:
