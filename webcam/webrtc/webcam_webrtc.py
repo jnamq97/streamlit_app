@@ -26,7 +26,7 @@ event_triggered = True
 box_len = 0
 lock = threading.Lock()
 # img_container = {"img": None}
-obj_contatiner = {"obj": []}
+obj_contatiner = {"obj": None}
 
 
 def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
@@ -112,19 +112,15 @@ def webrtc(token):
     while self_ctx.state.playing:
         temp += 1
         if temp % 500 == 0:
-            try:
-                with lock:
-                    # image = img_container["img"]
-                    dangers = obj_contatiner["obj"].pop()
-            except:
-                dangers = []
+            with lock:
+                # image = img_container["img"]
+                dangers = obj_contatiner["obj"]
                 # obj_contatiner["obj"] = None
             temp += 1
-            text_place.text(f"warning! : {dangers}")
-            # if dangers is None:
-            #     continue
-            if len(dangers) > 0:
+            if dangers is None:
+                continue
+            elif len(dangers) > 0:
                 autoplay_audio(recorded_audio_file)
-
+                text_place.text(f"warning! : {dangers}")
         # elif temp < 2000:
         #     obj_contatiner["obj"].append(None)
