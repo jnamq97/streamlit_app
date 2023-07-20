@@ -73,20 +73,19 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
 #     play(audio)
 
 
-def autoplay_audio(file_path: str):
+def autoplay_audio(audio_bytes):
     audio_place = st.empty()
-    with open(file_path, "rb") as f:
-        data = f.read()
-        b64 = base64.b64encode(data).decode()
-        md = f"""
-            <audio controls autoplay="true">
-            <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
-            </audio>
-            """
-        audio_place.markdown(
-            md,
-            unsafe_allow_html=True,
-        )
+
+    b64 = base64.b64encode(audio_bytes).decode()
+    md = f"""
+        <audio controls autoplay="true">
+        <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+        </audio>
+        """
+    audio_place.markdown(
+        md,
+        unsafe_allow_html=True,
+    )
     time.sleep(2)
     audio_place.empty()
 
@@ -122,4 +121,4 @@ def webrtc_init():
             temp += 1
         text_place.text(temp)
         if temp % 10 == 0:
-            autoplay_audio(recorded_audio_file)
+            autoplay_audio(audio_bytes)
