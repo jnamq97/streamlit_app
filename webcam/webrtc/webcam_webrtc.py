@@ -14,6 +14,7 @@ from pydub.playback import play
 import threading
 import base64
 import time
+from warning_system.warning_system import warning_state_Algorithm
 
 
 def generate_label_colors(classes=26):
@@ -26,6 +27,7 @@ event_triggered = True
 box_len = 0
 lock = threading.Lock()
 img_container = {"img": None}
+obj_contatiner = {"obj": None}
 
 
 def change_box_len():
@@ -36,27 +38,32 @@ def change_box_len():
 def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
     image = frame.to_ndarray(format="bgr24")
     preds = model(image)
+    h, w = preds[0].orig_shape
 
     boxes = preds[0].boxes.boxes
     classes = preds[0].names
 
     with lock:
         img_container["img"] = image
+        danger = []
 
-    for xmin, ymin, xmax, ymax, score, label in boxes:
-        xmin, ymin, xmax, ymax = map(int, [xmin, ymin, xmax, ymax])
-        label_name = classes[int(label.item())]
-        color = COLORS[int(label.item())]
-        cv2.rectangle(image, (xmin, ymin), (xmax, ymax), color, 2)
-        cv2.putText(
-            image,
-            label_name,
-            (xmin, ymin - 10),
-            cv2.FONT_HERSHEY_SIMPLEX,
-            0.9,
-            color,
-            2,
-        )
+        for xmin, ymin, xmax, ymax, score, label in boxes:
+            xmin, ymin, xmax, ymax = map(int, [xmin, ymin, xmax, ymax])
+            label_name = classes[int(label.item())]
+            color = COLORS[int(label.item())]
+            cv2.rectangle(image, (xmin, ymin), (xmax, ymax), color, 2)
+            cv2.putText(
+                image,
+                label_name,
+                (xmin, ymin - 10),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.9,
+                color,
+                2,
+            )
+            if warning_state_Algorithm(xmin, ymin, xmax, ymax, h, w) == 3:
+                danger.append(label_name)
+        obj_contatiner["obj"] = danger
 
     # if len(boxes) > 1:
     #     # st.audio(recorded_audio_file)
@@ -73,19 +80,20 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
 #     play(audio)
 
 
-def autoplay_audio(audio_bytes):
+def autoplay_audio(file_path: str):
     audio_place = st.empty()
-
-    b64 = base64.b64encode(audio_bytes).decode()
-    md = f"""
-        <audio controls autoplay="true">
-        <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
-        </audio>
-        """
-    audio_place.markdown(
-        md,
-        unsafe_allow_html=True,
-    )
+    with open(file_path, "rb") as f:
+        data = f.read()
+        b64 = base64.b64encode(data).decode()
+        md = f"""
+            <audio controls autoplay="true">
+            <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+            </audio>
+            """
+        audio_place.markdown(
+            md,
+            unsafe_allow_html=True,
+        )
     time.sleep(2)
     audio_place.empty()
 
@@ -118,7 +126,8 @@ def webrtc_init():
     while self_ctx.state.playing:
         with lock:
             image = img_container["img"]
+            dangers = obj_contatiner["obj"]
             temp += 1
         text_place.text(temp)
-        if temp % 10 == 0:
-            autoplay_audio(audio_bytes)
+        if temp % 10 == 0 and len(dangers) != 0:
+            autoplay_audio(recorded_audio_file)
