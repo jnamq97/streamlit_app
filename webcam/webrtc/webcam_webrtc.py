@@ -24,8 +24,8 @@ COLORS = generate_label_colors()
 # detected_dict = {"boxes": None}
 # number = {"count": None}
 
-lock = threading.Lock()
-img_container = {"img": None}
+# lock = threading.Lock()
+# img_container = {"img": None}
 
 
 def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
@@ -36,8 +36,8 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
     boxes = preds[0].boxes.boxes
     classes = preds[0].names
 
-    with lock:
-        img_container["img"] = image
+    # with lock:
+    #     img_container["img"] = image
 
     # max_warning = 0
     # box_list = []
@@ -91,13 +91,13 @@ def webrtc_init():
         key="apas",
     )
 
-    temp = 0
-    text_place = st.empty()
-    while ctx.state.playing:
-        with lock:
-            image = img_container["img"]
-            temp += 1
-        text_place.text(temp)
+    # temp = 0
+    # text_place = st.empty()
+    # while ctx.state.playing:
+    #     with lock:
+    #         image = img_container["img"]
+    #         temp += 1
+    #     text_place.text(temp)
     #     warning = warning_message["warning"]
     # if warning != 3:
     #     continue
