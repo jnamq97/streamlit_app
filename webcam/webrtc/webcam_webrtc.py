@@ -26,7 +26,7 @@ event_triggered = True
 box_len = 0
 lock = threading.Lock()
 # img_container = {"img": None}
-obj_contatiner = {"obj": [[] * 100000]}
+obj_contatiner = {"obj": []}
 
 
 def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
@@ -131,7 +131,8 @@ def webrtc(token):
         if temp % 2000 == 0:
             with lock:
                 # image = img_container["img"]
-                dangers = obj_contatiner["obj"].pop()
+                if len(obj_contatiner["obj"]) != 0:
+                    dangers = obj_contatiner["obj"].pop()
                 # obj_contatiner["obj"] = None
             temp += 1
             if dangers is None:
