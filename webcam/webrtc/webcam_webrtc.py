@@ -98,8 +98,7 @@ def autoplay_audio(file_path: str):
 
 def webrtc_init():
     global model
-    with lock:
-        model = YOLO("/app/streamlit_app/weights/yolov8n_100epoch_.pt")
+    model = YOLO("/app/streamlit_app/weights/yolov8n_100epoch_.pt")
     os.environ["TWILIO_ACCOUNT_SID"] = st.secrets["TWILIO_ACCOUNT_SID"]
     os.environ["TWILIO_AUTH_TOKEN"] = st.secrets["TWILIO_AUTH_TOKEN"]
 
@@ -108,7 +107,10 @@ def webrtc_init():
     client = Client(account_sid, auth_token)
 
     token = client.tokens.create()
+    webrtc(token)
 
+
+def webrtc(token):
     self_ctx = webrtc_streamer(
         rtc_configuration={"iceServers": token.ice_servers},
         media_stream_constraints={"video": True, "audio": False},
