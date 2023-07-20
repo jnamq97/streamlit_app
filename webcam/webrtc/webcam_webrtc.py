@@ -27,7 +27,7 @@ event_triggered = True
 box_len = 0
 lock = threading.Lock()
 # img_container = {"img": None}
-obj_contatiner = {"obj": [[] * 10000000]}
+obj_contatiner = {"obj": [[] * 1000]}
 
 
 def change_box_len():
