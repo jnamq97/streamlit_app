@@ -24,8 +24,8 @@ COLORS = generate_label_colors()
 # detected_dict = {"boxes": None}
 # number = {"count": None}
 
-# lock = threading.Lock()
-# img_container = {"img": None}
+lock = threading.Lock()
+img_container = {"img": None}
 
 
 def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
@@ -36,39 +36,39 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
     boxes = preds[0].boxes.boxes
     classes = preds[0].names
 
-    # with lock:
-    #     img_container["img"] = image
+    with lock:
+        img_container["img"] = image
 
     # max_warning = 0
     # box_list = []
-    for xmin, ymin, xmax, ymax, score, label in boxes:
-        xmin, ymin, xmax, ymax = map(int, [xmin, ymin, xmax, ymax])
-        label_name = classes[int(label.item())]
-        color = COLORS[int(label.item())]
-        cv2.rectangle(image, (xmin, ymin), (xmax, ymax), color, 2)
-        cv2.putText(
-            image,
-            label_name,
-            (xmin, ymin - 10),
-            cv2.FONT_HERSHEY_SIMPLEX,
-            0.9,
-            color,
-            2,
-        )
-        # box_list.append((label_name))
+    # for xmin, ymin, xmax, ymax, score, label in boxes:
+    #     xmin, ymin, xmax, ymax = map(int, [xmin, ymin, xmax, ymax])
+    #     label_name = classes[int(label.item())]
+    #     color = COLORS[int(label.item())]
+    #     cv2.rectangle(image, (xmin, ymin), (xmax, ymax), color, 2)
+    #     cv2.putText(
+    #         image,
+    #         label_name,
+    #         (xmin, ymin - 10),
+    #         cv2.FONT_HERSHEY_SIMPLEX,
+    #         0.9,
+    #         color,
+    #         2,
+    #     )
+    # box_list.append((label_name))
 
-        # warning = max(
-        #     warning_state_Algorithm(xmin, ymin, xmax, ymax, int(label.item()), h, w),
-        #     warning,
-        # # )
-        # _, warning = warning_state_Algorithm(
-        #     xmin, ymin, xmax, ymax, int(label.item()), h, w
-        # )
-        # max_warning = max(max_warning, warning)
+    # warning = max(
+    #     warning_state_Algorithm(xmin, ymin, xmax, ymax, int(label.item()), h, w),
+    #     warning,
+    # # )
+    # _, warning = warning_state_Algorithm(
+    #     xmin, ymin, xmax, ymax, int(label.item()), h, w
+    # )
+    # max_warning = max(max_warning, warning)
 
-        # with lock:
-        # warning_message["warning"] = warning
-        # detected_dict["boxes"] = box_list
+    # with lock:
+    # warning_message["warning"] = warning
+    # detected_dict["boxes"] = box_list
 
     return av.VideoFrame.from_ndarray(image, format="bgr24")
 
@@ -91,13 +91,13 @@ def webrtc_init():
         key="apas",
     )
 
-    # temp = 0
-    # text_place = st.empty()
-    # while ctx.state.playing:
-    #     with lock:
-    #         image = img_container["img"]
-    #         temp += 1
-    #     text_place.text(temp)
+    temp = 0
+    text_place = st.empty()
+    while ctx.state.playing:
+        with lock:
+            image = img_container["img"]
+            temp += 1
+        text_place.text(temp)
     #     warning = warning_message["warning"]
     # if warning != 3:
     #     continue
