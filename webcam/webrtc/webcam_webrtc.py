@@ -117,5 +117,5 @@ def webrtc_init():
             image = img_container["img"]
             temp += 1
         text_place.text(temp)
-        # if temp % 10 == 0:
-        #     autoplay_audio(recorded_audio_file, audio_place)
+        if temp % 10 == 0:
+            autoplay_audio(recorded_audio_file, audio_place)
