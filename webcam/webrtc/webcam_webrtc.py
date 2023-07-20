@@ -42,27 +42,27 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
 
     boxes = preds[0].boxes.boxes
     classes = preds[0].names
+    danger = []
+
+    for xmin, ymin, xmax, ymax, score, label in boxes:
+        xmin, ymin, xmax, ymax = map(int, [xmin, ymin, xmax, ymax])
+        label_name = classes[int(label.item())]
+        color = COLORS[int(label.item())]
+        cv2.rectangle(image, (xmin, ymin), (xmax, ymax), color, 2)
+        cv2.putText(
+            image,
+            label_name,
+            (xmin, ymin - 10),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.9,
+            color,
+            2,
+        )
+        if warning_state_Algorithm(xmin, ymin, xmax, ymax, h, w) == 3:
+            danger.append(label_name)
 
     with lock:
         img_container["img"] = image
-        danger = []
-
-        for xmin, ymin, xmax, ymax, score, label in boxes:
-            xmin, ymin, xmax, ymax = map(int, [xmin, ymin, xmax, ymax])
-            label_name = classes[int(label.item())]
-            color = COLORS[int(label.item())]
-            cv2.rectangle(image, (xmin, ymin), (xmax, ymax), color, 2)
-            cv2.putText(
-                image,
-                label_name,
-                (xmin, ymin - 10),
-                cv2.FONT_HERSHEY_SIMPLEX,
-                0.9,
-                color,
-                2,
-            )
-            if warning_state_Algorithm(xmin, ymin, xmax, ymax, h, w) == 3:
-                danger.append(label_name)
         obj_contatiner["obj"] = danger
 
     # if len(boxes) > 1:
