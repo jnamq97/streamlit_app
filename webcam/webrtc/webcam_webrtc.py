@@ -26,7 +26,7 @@ event_triggered = True
 box_len = 0
 lock = threading.Lock()
 # img_container = {"img": None}
-obj_contatiner = {"obj": [[] for _ in range(100000)]}
+obj_contatiner = {"obj": [[] for _ in range(1000)]}
 
 
 def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
