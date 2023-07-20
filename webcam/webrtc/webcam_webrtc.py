@@ -42,7 +42,9 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
 
     boxes = preds[0].boxes.boxes
     classes = preds[0].names
-    danger = []
+    danger = [
+        [None],
+    ]
 
     if len(boxes) > 0:
         with lock:
