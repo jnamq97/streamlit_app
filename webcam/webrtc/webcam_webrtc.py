@@ -4,42 +4,43 @@ import cv2
 from matplotlib import pyplot as plt
 from twilio.rest import Client
 import streamlit as st
-import av
 from ultralytics import YOLO
 import numpy as np
+
+# for audio
+import av
+from pydub import AudioSegment
+from pydub.playback import play
 import threading
-from warning_system.warning_system import warning_state_Algorithm
 
 
-# @st.cache_resource  # type: ignore
 def generate_label_colors(classes=26):
     return np.random.uniform(0, 255, size=(classes, 3))
 
 
 model = YOLO("/app/streamlit_app/weights/yolov8n_100epoch_.pt")
 COLORS = generate_label_colors()
-
-# warning_message = {"warning": None}
-# detected_dict = {"boxes": None}
-# number = {"count": None}
-
+event_triggered = True
+box_len = 0
 lock = threading.Lock()
 img_container = {"img": None}
 
 
+def change_box_len():
+    global box_len
+    box_len += 1
+
+
 def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
     image = frame.to_ndarray(format="bgr24")
-
     preds = model(image)
-    h, w = preds[0].orig_shape
+
     boxes = preds[0].boxes.boxes
     classes = preds[0].names
 
     with lock:
         img_container["img"] = image
 
-    # max_warning = 0
-    # box_list = []
     for xmin, ymin, xmax, ymax, score, label in boxes:
         xmin, ymin, xmax, ymax = map(int, [xmin, ymin, xmax, ymax])
         label_name = classes[int(label.item())]
@@ -54,22 +55,20 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
             color,
             2,
         )
-        # box_list.append((label_name))
 
-        # warning = max(
-        #     warning_state_Algorithm(xmin, ymin, xmax, ymax, int(label.item()), h, w),
-        #     warning,
-        # # )
-        # _, warning = warning_state_Algorithm(
-        #     xmin, ymin, xmax, ymax, int(label.item()), h, w
-        # )
-        # max_warning = max(max_warning, warning)
+    # if len(boxes) > 1:
+    #     # st.audio(recorded_audio_file)
+    #     change_box_len()
 
-        # with lock:
-        # warning_message["warning"] = warning
-        # detected_dict["boxes"] = box_list
+    #     # 클라이언트 측에서 오디오 재생
+    #     play(AudioSegment.from_file(recorded_audio_file))
 
     return av.VideoFrame.from_ndarray(image, format="bgr24")
+
+
+# def play_recorded_audio(recorded_audio_file):
+#     audio = AudioSegment.from_file(recorded_audio_file)
+#     play(audio)
 
 
 def webrtc_init():
@@ -82,9 +81,9 @@ def webrtc_init():
 
     token = client.tokens.create()
 
-    ctx = webrtc_streamer(
+    self_ctx = webrtc_streamer(
         rtc_configuration={"iceServers": token.ice_servers},
-        media_stream_constraints={"video": True, "audio": False},
+        media_stream_constraints={"video": True, "audio": True},
         video_frame_callback=video_frame_callback,
         async_processing=True,
         key="apas",
@@ -92,16 +91,15 @@ def webrtc_init():
 
     temp = 0
     text_place = st.empty()
-    while ctx.state.playing:
+    audio_place = st.empty()
+    recorded_audio_file = "/app/streamlit_app/webcam/webrtc/output.mp3"
+    audio_file = open(recorded_audio_file, "rb")
+    audio_bytes = audio_file.read()
+
+    while self_ctx.state.playing:
         with lock:
             image = img_container["img"]
             temp += 1
         text_place.text(temp)
-    #     warning = warning_message["warning"]
-    # if warning != 3:
-    #     continue
-    # with lock:
-    #     detected = detected_dict["boxes"]
-    # if detected is None:
-    #     continue
-    # text_place.text(f"{detected}")
+        if temp % 20 == 0:
+            audio_place.audio(audio_bytes, format="audio/ogg")
