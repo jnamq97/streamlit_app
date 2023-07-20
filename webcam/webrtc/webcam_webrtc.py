@@ -122,15 +122,15 @@ def webrtc_init():
     audio_file = open(recorded_audio_file, "rb")
     audio_bytes = audio_file.read()
 
-    # while self_ctx.state.playing:
-    #     with lock:
-    #         image = img_container["img"]
-    #         dangers = obj_contatiner["obj"]
-    #         temp += 1
-    #     if dangers is None:
-    #         continue
-
-    #     if temp % 20 == 0:
-    #         if len(dangers) > 0:
-    #             autoplay_audio(recorded_audio_file)
-    #             text_place.text(f"warning! : {dangers}")
+    while self_ctx.state.playing:
+        temp += 1
+        if temp % 20 == 0:
+            with lock:
+                image = img_container["img"]
+                dangers = obj_contatiner["obj"]
+                temp += 1
+            if dangers is None:
+                continue
+            if len(dangers) > 0:
+                autoplay_audio(recorded_audio_file)
+                text_place.text(f"warning! : {dangers}")
