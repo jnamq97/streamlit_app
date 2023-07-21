@@ -74,19 +74,19 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
 
 def audio_frame_callback(frame: av.AudioFrame) -> av.AudioFrame:
     frame = None
-    with lock:
-        if len(obj_contatiner["obj"]) > 0:
-            audio = AudioSegment.from_file(
-                "/app/streamlit_app/webcam/webrtc/output.mp3"
-            )
+    # with lock:
+    #     if len(obj_contatiner["obj"]) > 0:
+    #         audio = AudioSegment.from_file(
+    #             "/app/streamlit_app/webcam/webrtc/output.mp3"
+    #         )
 
-            # Convert pydub audio segment to bytes
-            audio_bytes = audio.raw_data
+    #         # Convert pydub audio segment to bytes
+    #         audio_bytes = audio.raw_data
 
-            # Create av.AudioFrame from the bytes data
-            frame = av.AudioFrame.from_ndarray(
-                audio_bytes, format="s16", layout="stereo", rate=audio.frame_rate
-            )
+    #         # Create av.AudioFrame from the bytes data
+    #         frame = av.AudioFrame.from_ndarray(
+    #             audio_bytes, format="s16", layout="stereo", rate=audio.frame_rate
+    #         )
 
     return frame
 
