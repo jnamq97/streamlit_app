@@ -142,6 +142,7 @@ def webrtc(token):
     webrtc_streamer(
         key="audio_output",
         mode=WebRtcMode.RECVONLY,
+        rtc_configuration={"iceServers": token.ice_servers},
         video_frame_callback=video_frame_callback,
         media_stream_constraints={"video": True, "audio": False},
         source_video_track=self_ctx.output_video_track,
