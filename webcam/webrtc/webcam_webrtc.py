@@ -97,8 +97,8 @@ def autoplay_audio(file_path: str):
 
 
 def webrtc_init():
-    global model, obj_contatiner
-    obj_contatiner["obj"] = [[] for _ in range(10000)]
+    global model
+
     model = YOLO("/app/streamlit_app/weights/yolov8n_100epoch_.pt")
     os.environ["TWILIO_ACCOUNT_SID"] = st.secrets["TWILIO_ACCOUNT_SID"]
     os.environ["TWILIO_AUTH_TOKEN"] = st.secrets["TWILIO_AUTH_TOKEN"]
