@@ -29,48 +29,48 @@ lock = threading.Lock()
 obj_contatiner = {"obj": None}
 
 
-# def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
-#     image = frame.to_ndarray(format="bgr24")
-#     preds = model(image)
-#     h, w = preds[0].orig_shape
+def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
+    image = frame.to_ndarray(format="bgr24")
+    #     preds = model(image)
+    #     h, w = preds[0].orig_shape
 
-#     boxes = preds[0].boxes.boxes
-#     classes = preds[0].names
-#     danger = []
+    #     boxes = preds[0].boxes.boxes
+    #     classes = preds[0].names
+    #     danger = []
 
-#     if len(boxes) > 0:
-#         with lock:
-#             for xmin, ymin, xmax, ymax, score, label in boxes:
-#                 xmin, ymin, xmax, ymax = map(int, [xmin, ymin, xmax, ymax])
-#                 label_name = classes[int(label.item())]
-#                 color = COLORS[int(label.item())]
-#                 cv2.rectangle(image, (xmin, ymin), (xmax, ymax), color, 2)
-#                 cv2.putText(
-#                     image,
-#                     label_name,
-#                     (xmin, ymin - 10),
-#                     cv2.FONT_HERSHEY_SIMPLEX,
-#                     0.9,
-#                     color,
-#                     2,
-#                 )
-#                 danger.append(label_name)
-#             # img_container["img"] = image
-#             obj_contatiner["obj"] = danger
-# else:
-#     obj_contatiner["obj"] = None
-# else:
-#     with lock:
-#         obj_contatiner["obj"] = None
+    #     if len(boxes) > 0:
+    #         with lock:
+    #             for xmin, ymin, xmax, ymax, score, label in boxes:
+    #                 xmin, ymin, xmax, ymax = map(int, [xmin, ymin, xmax, ymax])
+    #                 label_name = classes[int(label.item())]
+    #                 color = COLORS[int(label.item())]
+    #                 cv2.rectangle(image, (xmin, ymin), (xmax, ymax), color, 2)
+    #                 cv2.putText(
+    #                     image,
+    #                     label_name,
+    #                     (xmin, ymin - 10),
+    #                     cv2.FONT_HERSHEY_SIMPLEX,
+    #                     0.9,
+    #                     color,
+    #                     2,
+    #                 )
+    #                 danger.append(label_name)
+    #             # img_container["img"] = image
+    #             obj_contatiner["obj"] = danger
+    # else:
+    #     obj_contatiner["obj"] = None
+    # else:
+    #     with lock:
+    #         obj_contatiner["obj"] = None
 
-# if len(boxes) > 1:
-#     # st.audio(recorded_audio_file)
-#     change_box_len()
+    # if len(boxes) > 1:
+    #     # st.audio(recorded_audio_file)
+    #     change_box_len()
 
-#     # 클라이언트 측에서 오디오 재생
-#     play(AudioSegment.from_file(recorded_audio_file))
+    #     # 클라이언트 측에서 오디오 재생
+    #     play(AudioSegment.from_file(recorded_audio_file))
 
-# return av.VideoFrame.from_ndarray(image, format="bgr24")
+    return av.VideoFrame.from_ndarray(image, format="bgr24")
 
 
 def audio_frame_callback(frame: av.AudioFrame) -> av.AudioFrame:
