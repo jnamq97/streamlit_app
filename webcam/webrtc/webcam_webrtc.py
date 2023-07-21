@@ -26,7 +26,7 @@ event_triggered = True
 box_len = 0
 lock = threading.Lock()
 # img_container = {"img": None}
-obj_contatiner = {}
+obj_contatiner = {"obj": None}
 
 
 def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
@@ -55,7 +55,7 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
             )
             danger.append(label_name)
         # img_container["img"] = image
-        obj_contatiner["obj"].append(danger)
+        obj_contatiner["obj"] = danger
     # else:
     #     obj_contatiner["obj"] = None
     # else:
@@ -73,6 +73,21 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
 
 
 def audio_frame_callback(frame: av.AudioFrame) -> av.AudioFrame:
+    frame = None
+    with lock:
+        if len(obj_contatiner["obj"]) > 0:
+            audio = AudioSegment.from_file(
+                "/app/streamlit_app/webcam/webrtc/output.mp3"
+            )
+
+            # Convert pydub audio segment to bytes
+            audio_bytes = audio.raw_data
+
+            # Create av.AudioFrame from the bytes data
+            frame = av.AudioFrame.from_ndarray(
+                audio_bytes, format="s16", layout="stereo", rate=audio.frame_rate
+            )
+
     return frame
 
 
@@ -117,20 +132,11 @@ def webrtc_init():
 def webrtc(token):
     self_ctx = webrtc_streamer(
         rtc_configuration={"iceServers": token.ice_servers},
-        media_stream_constraints={"video": True, "audio": False},
+        media_stream_constraints={"video": True, "audio": True},
         video_frame_callback=video_frame_callback,
-        mode=WebRtcMode.RECVONLY,
+        audio_frame_callback=audio_frame_callback,
         async_processing=True,
         key="apas",
-    )
-
-    webrtc_streamer(
-        key="audio_output",
-        mode=WebRtcMode.SENDONLY,
-        video_frame_callback=video_frame_callback,
-        media_stream_constraints={"video": True, "audio": True},
-        source_audio_track=self_ctx.output_audio_track,
-        desired_playing_state=self_ctx.state.playing,
     )
 
     # temp = 0
