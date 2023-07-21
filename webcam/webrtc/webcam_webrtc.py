@@ -104,7 +104,10 @@ def webrtc_init():
         key="apas",
     )
 
+    recorded_audio_file = "/app/streamlit_app/webcam/webrtc/output.mp3"
     text_place = st.empty()
     while ctx.state.playing:
         result = result_queue.get()
         text_place.text(result)
+        if len(result) != 0:
+            autoplay_audio(recorded_audio_file)
