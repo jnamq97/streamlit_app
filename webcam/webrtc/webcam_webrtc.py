@@ -38,25 +38,25 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
     classes = preds[0].names
     danger = []
 
-    if len(boxes) > 0:
-        with lock:
-            for xmin, ymin, xmax, ymax, score, label in boxes:
-                xmin, ymin, xmax, ymax = map(int, [xmin, ymin, xmax, ymax])
-                label_name = classes[int(label.item())]
-                color = COLORS[int(label.item())]
-                cv2.rectangle(image, (xmin, ymin), (xmax, ymax), color, 2)
-                cv2.putText(
-                    image,
-                    label_name,
-                    (xmin, ymin - 10),
-                    cv2.FONT_HERSHEY_SIMPLEX,
-                    0.9,
-                    color,
-                    2,
-                )
-                danger.append(label_name)
-            # img_container["img"] = image
-            obj_contatiner["obj"] = danger
+    # if len(boxes) > 0:
+    #     with lock:
+    #         for xmin, ymin, xmax, ymax, score, label in boxes:
+    #             xmin, ymin, xmax, ymax = map(int, [xmin, ymin, xmax, ymax])
+    #             label_name = classes[int(label.item())]
+    #             color = COLORS[int(label.item())]
+    #             cv2.rectangle(image, (xmin, ymin), (xmax, ymax), color, 2)
+    #             cv2.putText(
+    #                 image,
+    #                 label_name,
+    #                 (xmin, ymin - 10),
+    #                 cv2.FONT_HERSHEY_SIMPLEX,
+    #                 0.9,
+    #                 color,
+    #                 2,
+    #             )
+    #             danger.append(label_name)
+    #         # img_container["img"] = image
+    #         obj_contatiner["obj"] = danger
     # else:
     #     obj_contatiner["obj"] = None
     # else:
@@ -133,13 +133,21 @@ def webrtc_init():
 def webrtc(token):
     self_ctx = webrtc_streamer(
         rtc_configuration={"iceServers": token.ice_servers},
-        media_stream_constraints={"video": True, "audio": True},
+        media_stream_constraints={"video": True, "audio": False},
         video_frame_callback=video_frame_callback,
         audio_frame_callback=audio_frame_callback,
+        mode=WebRtcMode.SENDONLY,
         async_processing=True,
         key="apas",
     )
-
+    webrtc_streamer(
+        key="audio_output",
+        mode=WebRtcMode.RECVONLY,
+        video_frame_callback=video_frame_callback,
+        media_stream_constraints={"video": False, "audio": True},
+        source_audio_track=self_ctx.output_audio_track,
+        desired_playing_state=self_ctx.state.playing,
+    )
     # temp = 0
     # text_place = st.empty()
     # # audio_place = st.empty()
