@@ -38,25 +38,22 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
     classes = preds[0].names
     danger = []
 
-    if len(boxes) > 0:
-        with lock:
-            for xmin, ymin, xmax, ymax, score, label in boxes:
-                xmin, ymin, xmax, ymax = map(int, [xmin, ymin, xmax, ymax])
-                label_name = classes[int(label.item())]
-                color = COLORS[int(label.item())]
-                cv2.rectangle(image, (xmin, ymin), (xmax, ymax), color, 2)
-                cv2.putText(
-                    image,
-                    label_name,
-                    (xmin, ymin - 10),
-                    cv2.FONT_HERSHEY_SIMPLEX,
-                    0.9,
-                    color,
-                    2,
-                )
-                danger.append(label_name)
-            # img_container["img"] = image
-            obj_contatiner["obj"].append(danger)
+    for xmin, ymin, xmax, ymax, score, label in boxes:
+        xmin, ymin, xmax, ymax = map(int, [xmin, ymin, xmax, ymax])
+        label_name = classes[int(label.item())]
+        color = COLORS[int(label.item())]
+        cv2.rectangle(image, (xmin, ymin), (xmax, ymax), color, 2)
+        cv2.putText(
+            image,
+            label_name,
+            (xmin, ymin - 10),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.9,
+            color,
+            2,
+        )
+        danger.append(label_name)
+    # img_container["img"] = image
     # else:
     #     obj_contatiner["obj"] = None
     # else:
@@ -97,8 +94,8 @@ def autoplay_audio(file_path: str):
 
 
 def webrtc_init():
-    global model, obj_contatiner
-    obj_contatiner["obj"] = [[] for _ in range(10000000)]
+    global model
+
     model = YOLO("/app/streamlit_app/weights/yolov8n_100epoch_.pt")
     os.environ["TWILIO_ACCOUNT_SID"] = st.secrets["TWILIO_ACCOUNT_SID"]
     os.environ["TWILIO_AUTH_TOKEN"] = st.secrets["TWILIO_AUTH_TOKEN"]
@@ -119,27 +116,3 @@ def webrtc(token):
         async_processing=True,
         key="apas",
     )
-
-    temp = 0
-    text_place = st.empty()
-    # audio_place = st.empty()
-    recorded_audio_file = "/app/streamlit_app/webcam/webrtc/output.mp3"
-    audio_file = open(recorded_audio_file, "rb")
-    audio_bytes = audio_file.read()
-
-    time.sleep(2)
-    while self_ctx.state.playing:
-        temp += 1
-        if temp % 2000 == 0:
-            with lock:
-                # image = img_container["img"]
-                dangers = obj_contatiner["obj"].pop()
-                # obj_contatiner["obj"] = None
-            temp += 1
-            if dangers is None:
-                continue
-            elif len(dangers) > 0:
-                autoplay_audio(recorded_audio_file)
-                text_place.text(f"warning! : {dangers}")
-        # elif temp < 2000:
-        #     obj_contatiner["obj"].append(None)
