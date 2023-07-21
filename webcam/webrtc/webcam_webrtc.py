@@ -54,9 +54,9 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
                 2,
             )
             danger.append(label_name)
-    with lock:
-        # img_container["img"] = image
-        obj_contatiner["obj"] = danger
+    # with lock:
+    #     # img_container["img"] = image
+    #     obj_contatiner["obj"] = danger
     # else:
     #     obj_contatiner["obj"] = None
     # else:
@@ -130,15 +130,16 @@ def webrtc(token):
     while self_ctx.state.playing:
         temp += 1
         if temp % 2000 == 0:
-            with lock:
-                # image = img_container["img"]
-                dangers = obj_contatiner["obj"]
-                # obj_contatiner["obj"] = None
-            temp += 1
-            if dangers is None:
-                continue
-            elif len(dangers) > 0:
-                autoplay_audio(recorded_audio_file)
-                text_place.text(f"warning! : {dangers}")
+            # with lock:
+            #     # image = img_container["img"]
+            #     dangers = obj_contatiner["obj"]
+            #     # obj_contatiner["obj"] = None
+            # temp += 1
+            # if dangers is None:
+            #     continue
+            # elif len(dangers) > 0:
+            #     autoplay_audio(recorded_audio_file)
+            #     text_place.text(f"warning! : {dangers}")
+            text_place.text(temp)
         # elif temp < 2000:
         #     obj_contatiner["obj"].append(None)
