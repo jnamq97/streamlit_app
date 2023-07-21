@@ -115,6 +115,7 @@ def webrtc(token):
         rtc_configuration={"iceServers": token.ice_servers},
         media_stream_constraints={"video": True, "audio": False},
         video_frame_callback=video_frame_callback,
+        async_processing=True,
         key="apas",
     )
 
