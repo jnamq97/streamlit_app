@@ -18,7 +18,7 @@ from warning_system.warning_system import warning_state_Algorithm
 import queue
 
 
-def generate_label_colors(classes=26):
+def generate_label_colors(classes=29):
     return np.random.uniform(0, 255, size=(classes, 3))
 
 
@@ -86,7 +86,7 @@ def autoplay_audio(file_path: str):
 def webrtc_init():
     global model
 
-    model = YOLO("/app/streamlit_app/weights/yolov8n_100epoch_.pt")
+    model = YOLO("/app/streamlit_app/weights/yolov8n_jp.pt")
     os.environ["TWILIO_ACCOUNT_SID"] = st.secrets["TWILIO_ACCOUNT_SID"]
     os.environ["TWILIO_AUTH_TOKEN"] = st.secrets["TWILIO_AUTH_TOKEN"]
 
