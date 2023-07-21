@@ -15,6 +15,7 @@ import threading
 import base64
 import time
 from warning_system.warning_system import warning_state_Algorithm
+import queue
 
 
 def generate_label_colors(classes=26):
@@ -27,6 +28,7 @@ box_len = 0
 lock = threading.Lock()
 # img_container = {"img": None}
 obj_contatiner = {"obj": None}
+result_queue: "queue.Queue[List[Detection]]" = queue.Queue()
 
 
 def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
@@ -38,23 +40,22 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
     classes = preds[0].names
     danger = []
 
-    with lock:
-        for xmin, ymin, xmax, ymax, score, label in boxes:
-            xmin, ymin, xmax, ymax = map(int, [xmin, ymin, xmax, ymax])
-            label_name = classes[int(label.item())]
-            color = COLORS[int(label.item())]
-            cv2.rectangle(image, (xmin, ymin), (xmax, ymax), color, 2)
-            cv2.putText(
-                image,
-                label_name,
-                (xmin, ymin - 10),
-                cv2.FONT_HERSHEY_SIMPLEX,
-                0.9,
-                color,
-                2,
-            )
-            danger.append(label_name)
-        obj_contatiner["obj"] = danger
+    for xmin, ymin, xmax, ymax, score, label in boxes:
+        xmin, ymin, xmax, ymax = map(int, [xmin, ymin, xmax, ymax])
+        label_name = classes[int(label.item())]
+        color = COLORS[int(label.item())]
+        cv2.rectangle(image, (xmin, ymin), (xmax, ymax), color, 2)
+        cv2.putText(
+            image,
+            label_name,
+            (xmin, ymin - 10),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.9,
+            color,
+            2,
+        )
+        danger.append(label_name)
+    result_queue.put(danger)
 
     return av.VideoFrame.from_ndarray(image, format="bgr24")
 
@@ -105,8 +106,5 @@ def webrtc_init():
 
     text_place = st.empty()
     while ctx.state.playing:
-        with lock:
-            dangers = obj_contatiner["obj"]
-        if dangers is None:
-            continue
-        text_place.text(dangers)
+        result = result_queue.get()
+        text_place.text(result)
