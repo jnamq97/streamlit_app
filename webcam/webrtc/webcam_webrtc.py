@@ -137,7 +137,6 @@ def webrtc(token):
         # video_frame_callback=video_frame_callback,
         audio_frame_callback=audio_frame_callback,
         mode=WebRtcMode.SENDONLY,
-        async_processing=True,
         key="apas",
     )
     webrtc_streamer(
