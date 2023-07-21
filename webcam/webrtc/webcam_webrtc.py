@@ -26,7 +26,7 @@ event_triggered = True
 box_len = 0
 lock = threading.Lock()
 # img_container = {"img": None}
-obj_contatiner = {}
+obj_contatiner = {"obj": None}
 
 
 def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
@@ -53,19 +53,9 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
             2,
         )
         danger.append(label_name)
-    # img_container["img"] = image
-    # else:
-    #     obj_contatiner["obj"] = None
-    # else:
-    #     with lock:
-    #         obj_contatiner["obj"] = None
 
-    # if len(boxes) > 1:
-    #     # st.audio(recorded_audio_file)
-    #     change_box_len()
-
-    #     # 클라이언트 측에서 오디오 재생
-    #     play(AudioSegment.from_file(recorded_audio_file))
+    with lock:
+        obj_contatiner["obj"] = danger
 
     return av.VideoFrame.from_ndarray(image, format="bgr24")
 
@@ -105,14 +95,19 @@ def webrtc_init():
     client = Client(account_sid, auth_token)
 
     token = client.tokens.create()
-    webrtc(token)
 
-
-def webrtc(token):
-    self_ctx = webrtc_streamer(
+    ctx = webrtc_streamer(
         rtc_configuration={"iceServers": token.ice_servers},
         media_stream_constraints={"video": True, "audio": False},
         video_frame_callback=video_frame_callback,
         async_processing=True,
         key="apas",
     )
+
+    text_place = st.empty()
+    while ctx.state.playing:
+        with lock:
+            dangers = obj_contatiner["obj"]
+        if dangers is None:
+            continue
+        text_place.text(dangers)
