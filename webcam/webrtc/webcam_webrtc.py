@@ -133,7 +133,7 @@ def webrtc_init():
 def webrtc(token):
     self_ctx = webrtc_streamer(
         rtc_configuration={"iceServers": token.ice_servers},
-        media_stream_constraints={"video": True, "audio": False},
+        media_stream_constraints={"video": True, "audio": True},
         video_frame_callback=video_frame_callback,
         audio_frame_callback=audio_frame_callback,
         mode=WebRtcMode.SENDONLY,
