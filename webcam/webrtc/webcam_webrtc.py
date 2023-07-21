@@ -1,4 +1,4 @@
-from streamlit_webrtc import webrtc_streamer
+from streamlit_webrtc import webrtc_streamer, WebRtcMode
 import os
 import cv2
 from matplotlib import pyplot as plt
@@ -26,7 +26,7 @@ event_triggered = True
 box_len = 0
 lock = threading.Lock()
 # img_container = {"img": None}
-obj_contatiner = {"obj": None}
+obj_contatiner = {}
 
 
 def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
@@ -38,49 +38,70 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
     classes = preds[0].names
     danger = []
 
-    if len(boxes) > 0:
-        with lock:
-            for xmin, ymin, xmax, ymax, score, label in boxes:
-                xmin, ymin, xmax, ymax = map(int, [xmin, ymin, xmax, ymax])
-                label_name = classes[int(label.item())]
-                color = COLORS[int(label.item())]
-                cv2.rectangle(image, (xmin, ymin), (xmax, ymax), color, 2)
-                cv2.putText(
-                    image,
-                    label_name,
-                    (xmin, ymin - 10),
-                    cv2.FONT_HERSHEY_SIMPLEX,
-                    0.9,
-                    color,
-                    2,
-                )
-                danger.append(label_name)
-            obj_contatiner["obj"] = danger
+    with lock:
+        for xmin, ymin, xmax, ymax, score, label in boxes:
+            xmin, ymin, xmax, ymax = map(int, [xmin, ymin, xmax, ymax])
+            label_name = classes[int(label.item())]
+            color = COLORS[int(label.item())]
+            cv2.rectangle(image, (xmin, ymin), (xmax, ymax), color, 2)
+            cv2.putText(
+                image,
+                label_name,
+                (xmin, ymin - 10),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.9,
+                color,
+                2,
+            )
+            danger.append(label_name)
+        # img_container["img"] = image
+        obj_contatiner["obj"].append(danger)
+    # else:
+    #     obj_contatiner["obj"] = None
+    # else:
+    #     with lock:
+    #         obj_contatiner["obj"] = None
+
+    # if len(boxes) > 1:
+    #     # st.audio(recorded_audio_file)
+    #     change_box_len()
+
+    #     # 클라이언트 측에서 오디오 재생
+    #     play(AudioSegment.from_file(recorded_audio_file))
 
     return av.VideoFrame.from_ndarray(image, format="bgr24")
 
 
-def autoplay_audio(file_path: str):
-    audio_place = st.empty()
-    with open(file_path, "rb") as f:
-        data = f.read()
-        b64 = base64.b64encode(data).decode()
-        md = f"""
-            <audio controls autoplay="true">
-            <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
-            </audio>
-            """
-        audio_place.markdown(
-            md,
-            unsafe_allow_html=True,
-        )
-    time.sleep(2)
-    audio_place.empty()
+def audio_frame_callback(frame: av.AudioFrame) -> av.AudioFrame:
+    return frame
+
+
+# def play_recorded_audio(recorded_audio_file):
+#     audio = AudioSegment.from_file(recorded_audio_file)
+#     play(audio)
+
+
+# def autoplay_audio(file_path: str):
+#     audio_place = st.empty()
+#     with open(file_path, "rb") as f:
+#         data = f.read()
+#         b64 = base64.b64encode(data).decode()
+#         md = f"""
+#             <audio controls autoplay="true">
+#             <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+#             </audio>
+#             """
+#         audio_place.markdown(
+#             md,
+#             unsafe_allow_html=True,
+#         )
+#     time.sleep(2)
+#     audio_place.empty()
 
 
 def webrtc_init():
-    global model
-
+    global model, obj_contatiner
+    obj_contatiner["obj"] = [[] for _ in range(10000)]
     model = YOLO("/app/streamlit_app/weights/yolov8n_100epoch_.pt")
     os.environ["TWILIO_ACCOUNT_SID"] = st.secrets["TWILIO_ACCOUNT_SID"]
     os.environ["TWILIO_AUTH_TOKEN"] = st.secrets["TWILIO_AUTH_TOKEN"]
@@ -98,29 +119,40 @@ def webrtc(token):
         rtc_configuration={"iceServers": token.ice_servers},
         media_stream_constraints={"video": True, "audio": False},
         video_frame_callback=video_frame_callback,
+        mode=WebRtcMode.SENDONLY,
         async_processing=True,
         key="apas",
     )
 
-    temp = 0
-    text_place = st.empty()
-    # audio_place = st.empty()
-    recorded_audio_file = "/app/streamlit_app/webcam/webrtc/output.mp3"
-    audio_file = open(recorded_audio_file, "rb")
-    audio_bytes = audio_file.read()
+    webrtc_streamer(
+        key="audio_output",
+        mode=WebRtcMode.RECVONLY,
+        video_frame_callback=video_frame_callback,
+        media_stream_constraints={"video": False, "audio": True},
+        source_audio_track=self_ctx.output_audio_track,
+        desired_playing_state=self_ctx.state.playing,
+    )
 
-    while self_ctx.state.playing:
-        temp += 1
-        if temp % 500 == 0:
-            with lock:
-                # image = img_container["img"]
-                dangers = obj_contatiner["obj"]
-                # obj_contatiner["obj"] = None
-            temp += 1
-            if dangers is None:
-                continue
-            elif len(dangers) > 0:
-                autoplay_audio(recorded_audio_file)
-                text_place.text(f"warning! : {dangers}")
-        # elif temp < 2000:
-        #     obj_contatiner["obj"].append(None)
+    # temp = 0
+    # text_place = st.empty()
+    # # audio_place = st.empty()
+    # recorded_audio_file = "/app/streamlit_app/webcam/webrtc/output.mp3"
+    # audio_file = open(recorded_audio_file, "rb")
+    # audio_bytes = audio_file.read()
+
+    # time.sleep(2)
+    # while self_ctx.state.playing:
+    #     temp += 1
+    #     if temp % 2000 == 0:
+    #         with lock:
+    #             # image = img_container["img"]
+    #             dangers = obj_contatiner["obj"].pop()
+    #             # obj_contatiner["obj"] = None
+    #         temp += 1
+    #         if dangers is None:
+    #             continue
+    #         elif len(dangers) > 0:
+    #             autoplay_audio(recorded_audio_file)
+    #             text_place.text(f"warning! : {dangers}")
+    #     # elif temp < 2000:
+    #     #     obj_contatiner["obj"].append(None)
