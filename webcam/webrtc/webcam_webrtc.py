@@ -128,7 +128,7 @@ def webrtc(token):
         key="audio_output",
         mode=WebRtcMode.RECVONLY,
         video_frame_callback=video_frame_callback,
-        media_stream_constraints={"video": False, "audio": True},
+        media_stream_constraints={"video": True, "audio": True},
         source_audio_track=self_ctx.output_audio_track,
         desired_playing_state=self_ctx.state.playing,
     )
