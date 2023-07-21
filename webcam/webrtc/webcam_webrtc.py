@@ -36,7 +36,7 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
     preds = model(image)
     h, w = preds[0].orig_shape
 
-    boxes = preds[0].boxes.boxes
+    boxes = preds[0].boxes.data
     classes = preds[0].names
     danger = []
 
