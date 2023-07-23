@@ -132,7 +132,6 @@ def webrtc_init():
             if len(result) != 0:
                 result.sort(key=lambda x: x[1], reverse=True)
                 danger_class, danger_level = result[0]
-                text_place.empty()
                 if danger_level != 0:  # except safe
                     text_place.warning("주의하세요 !")
                     lv, dir = WARNING_LEVELS[str(danger_level)]
@@ -140,3 +139,5 @@ def webrtc_init():
                     autoplay_audio(audio_file_path)
                 else:
                     text_place.success("안전합니다 !")
+            else:
+                text_place.success("안전합니다 !")
