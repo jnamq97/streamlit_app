@@ -24,8 +24,6 @@ def generate_label_colors(classes=29):
 
 COLORS = generate_label_colors()
 event_triggered = True
-box_len = 0
-lock = threading.Lock()
 # img_container = {"img": None}
 obj_contatiner = {"obj": None}
 result_queue: "queue.Queue[List[Detection]]" = queue.Queue()
@@ -65,7 +63,8 @@ def create_video_frame_callback():
             danger.append(
                 (warning_state_Algorithm(xmin, ymin, xmax, ymax, label_name, h, w))
             )
-        result_queue.put(danger)
+        if frame_count % 20 == 0:
+            result_queue.put(danger)
         frame_queue.put(frame_count)
 
         return av.VideoFrame.from_ndarray(image, format="bgr24")
@@ -121,10 +120,13 @@ def webrtc_init():
 
     recorded_audio_file = "/app/streamlit_app/webcam/webrtc/output.mp3"
     text_place = st.empty()
+    danger_place = st.empty()
     while ctx.state.playing:
         frame_num = frame_queue.get()
-        if frame_num % 50 == 0:
+        if frame_num % 20 == 0:
+            result = result_queue.get()
             text_place.text(frame_num)
+            danger_place.text(result)
     #     if not result_queue.empty():
     #         result = result_queue.get()
     # if len(result):
