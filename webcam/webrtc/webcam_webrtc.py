@@ -29,46 +29,46 @@ lock = threading.Lock()
 # img_container = {"img": None}
 obj_contatiner = {"obj": None}
 result_queue: "queue.Queue[List[Detection]]" = queue.Queue()
-frame_count = 0
 
 
-def count_frames():
-    global frame_count
-    frame_count += 1
+def create_video_frame_callback():
+    frame_count = 0
 
+    def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
+        nonlocal frame_count
 
-def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
-    count_frames()
-    image = frame.to_ndarray(format="bgr24")
-    preds = model(image)
-    h, w = preds[0].orig_shape
+        frame_count += 1
+        image = frame.to_ndarray(format="bgr24")
+        preds = model(image)
+        h, w = preds[0].orig_shape
 
-    boxes = preds[0].boxes.data
-    classes = preds[0].names
-    danger = []
+        boxes = preds[0].boxes.data
+        classes = preds[0].names
+        danger = []
 
-    for xmin, ymin, xmax, ymax, score, label in boxes:
-        xmin, ymin, xmax, ymax = map(int, [xmin, ymin, xmax, ymax])
-        label_name = classes[int(label.item())]
-        color = COLORS[int(label.item())]
-        cv2.rectangle(image, (xmin, ymin), (xmax, ymax), color, 2)
-        cv2.putText(
-            image,
-            label_name,
-            (xmin, ymin - 10),
-            cv2.FONT_HERSHEY_SIMPLEX,
-            0.9,
-            color,
-            2,
-        )
-        # danger.append(label_name)
-        danger.append(
-            (warning_state_Algorithm(xmin, ymin, xmax, ymax, label_name, h, w))
-        )
+        for xmin, ymin, xmax, ymax, score, label in boxes:
+            xmin, ymin, xmax, ymax = map(int, [xmin, ymin, xmax, ymax])
+            label_name = classes[int(label.item())]
+            color = COLORS[int(label.item())]
+            cv2.rectangle(image, (xmin, ymin), (xmax, ymax), color, 2)
+            cv2.putText(
+                image,
+                label_name,
+                (xmin, ymin - 10),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.9,
+                color,
+                2,
+            )
+            # danger.append(label_name)
+            danger.append(
+                (warning_state_Algorithm(xmin, ymin, xmax, ymax, label_name, h, w))
+            )
 
-    result_queue.put(danger)
+        if frame_count % 300 == 0:
+            result_queue.put(danger)
 
-    return av.VideoFrame.from_ndarray(image, format="bgr24")
+        return av.VideoFrame.from_ndarray(image, format="bgr24")
 
 
 # def play_recorded_audio(recorded_audio_file):
@@ -107,10 +107,12 @@ def webrtc_init():
 
     token = client.tokens.create()
 
+    video_frame_cb = create_video_frame_callback()
+
     ctx = webrtc_streamer(
         rtc_configuration={"iceServers": token.ice_servers},
         media_stream_constraints={"video": True, "audio": False},
-        video_frame_callback=video_frame_callback,
+        video_frame_callback=video_frame_cb,
         async_processing=True,
         key="apas",
     )
@@ -118,27 +120,27 @@ def webrtc_init():
     recorded_audio_file = "/app/streamlit_app/webcam/webrtc/output.mp3"
     text_place = st.empty()
     while ctx.state.playing:
-        text_place.text(frame_count)
-        # result = result_queue.get()
-        # if len(result):
-        #     text_place.text(result)
-        #     audio_place = st.empty()
-        #     with open(recorded_audio_file, "rb") as f:
-        #         data = f.read()
-        #         b64 = base64.b64encode(data).decode()
-        #         md = f"""
-        #             <audio controls autoplay="true">
-        #             <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
-        #             </audio>
-        #             """
-        #         audio_place.markdown(
-        #             md,
-        #             unsafe_allow_html=True,
-        #         )
-        #     # time.sleep(2)
-        #     # audio_place.empty()
-        # else:
-        #     text_place.text("no detection !")
+        if result_queue:
+            result = result_queue.get()
+            if len(result):
+                text_place.text(result)
+                audio_place = st.empty()
+                with open(recorded_audio_file, "rb") as f:
+                    data = f.read()
+                    b64 = base64.b64encode(data).decode()
+                    md = f"""
+                        <audio controls autoplay="true">
+                        <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+                        </audio>
+                        """
+                    audio_place.markdown(
+                        md,
+                        unsafe_allow_html=True,
+                    )
+                # time.sleep(2)
+                # audio_place.empty()
+            else:
+                text_place.text("no detection !")
 
         # if len(result) != 0:
         #     autoplay_audio(recorded_audio_file)
