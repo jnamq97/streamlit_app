@@ -69,6 +69,7 @@ def create_video_frame_callback():
             result_queue.put(danger)
 
         return av.VideoFrame.from_ndarray(image, format="bgr24")
+    return video_frame_callback
 
 
 # def play_recorded_audio(recorded_audio_file):
