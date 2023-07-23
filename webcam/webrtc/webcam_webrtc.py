@@ -123,7 +123,8 @@ def webrtc_init():
     text_place = st.empty()
     while ctx.state.playing:
         frame_num = frame_queue.get()
-        text_place.text(frame_num)
+        if frame_num % 50 == 0:
+            text_place.text(frame_num)
     #     if not result_queue.empty():
     #         result = result_queue.get()
     # if len(result):
