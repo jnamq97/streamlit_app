@@ -85,9 +85,13 @@ def autoplay_audio(file_path: str, playback_rate=1.5):
         data = f.read()
         b64 = base64.b64encode(data).decode()
         md = f"""
-            <audio controls autoplay="true" playbackRate="{playback_rate}">
-            <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+            <audio controls autoplay="true" id="audio_element">
+                <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
             </audio>
+            <script>
+                var audioElement = document.getElementById("audio_element");
+                audioElement.playbackRate = {playback_rate};
+            </script>
             """
         audio_place.markdown(
             md,
