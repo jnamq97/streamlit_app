@@ -23,6 +23,15 @@ def generate_label_colors(classes=29):
 
 
 COLORS = generate_label_colors()
+WARNING_LEVELS = {
+    "1": (1, "right"),
+    "2": (1, "left"),
+    "3": (1, "center"),
+    "4": (2, "right"),
+    "5": (2, "left"),
+    "6": (2, "center"),
+    "7": (3, "center"),
+}
 result_queue: "queue.Queue[List[Detection]]" = queue.Queue()
 frame_queue = queue.Queue()
 
@@ -56,10 +65,11 @@ def create_video_frame_callback():
                 color,
                 2,
             )
-            # danger.append(label_name)
-            danger.append(
-                (warning_state_Algorithm(xmin, ymin, xmax, ymax, label_name, h, w))
-            )
+            if frame_count % 50 == 0:
+                # danger.append(label_name)
+                danger.append(
+                    (warning_state_Algorithm(xmin, ymin, xmax, ymax, label_name, h, w))
+                )
         if frame_count % 50 == 0:
             result_queue.put(danger)
         frame_queue.put(frame_count)
@@ -69,13 +79,13 @@ def create_video_frame_callback():
     return video_frame_callback
 
 
-def autoplay_audio(file_path: str):
+def autoplay_audio(file_path: str, playback_rate=1.2):
     audio_place = st.empty()
     with open(file_path, "rb") as f:
         data = f.read()
         b64 = base64.b64encode(data).decode()
         md = f"""
-            <audio controls autoplay="true">
+            <audio controls autoplay="true" playbackRate="{playback_rate}">
             <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
             </audio>
             """
@@ -110,7 +120,7 @@ def webrtc_init():
         key="apas",
     )
 
-    recorded_audio_file = "/app/streamlit_app/webcam/webrtc/output.mp3"
+    # recorded_audio_file = "/app/streamlit_app/webcam/webrtc/output.mp3"
     # recorded_audio_files = {} ## dictionary로 파일 경로들 저장하거나 경로를 조합해야할듯.
     text_place = st.empty()
     danger_place = st.empty()
@@ -121,7 +131,9 @@ def webrtc_init():
             text_place.text(frame_num)
             if len(result) != 0:
                 result.sort(key=lambda x: x[1], reverse=True)
-                danger_class = result[0][0]
+                danger_class, danger_level = result[0][0]
                 danger_place.text(result)
 
-                autoplay_audio(recorded_audio_file)
+                lv, dir = WARNING_LEVELS[str(danger_level)]
+                audio_file_path = f"/app/streamlit_app/webcam/webrtc/tts/{danger_class}_{lv}_{dir}.mp3"
+                autoplay_audio(audio_file_path)
