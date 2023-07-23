@@ -83,7 +83,7 @@ def autoplay_audio(file_path: str):
             md,
             unsafe_allow_html=True,
         )
-    time.sleep(2)
+    time.sleep(1.5)
     audio_place.empty()
 
 
