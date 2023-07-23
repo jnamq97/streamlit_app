@@ -123,12 +123,27 @@ def webrtc_init():
     danger_place = st.empty()
     while ctx.state.playing:
         frame_num = frame_queue.get()
-        if frame_num % 20 == 0:
+        if frame_num % 20 == 0:  # for every 20 frames
             result = result_queue.get()
             text_place.text(frame_num)
-            danger_place.text(result)
-    #     if not result_queue.empty():
-    #         result = result_queue.get()
+            if len(result) != 0:
+                autoplay_audio(recorded_audio_file)
+                # audio_place = st.empty()
+                # with open(recorded_audio_file, "rb") as f:
+                #     data = f.read()
+                #     b64 = base64.b64encode(data).decode()
+                #     md = f"""
+                #         <audio controls autoplay="true">
+                #         <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+                #         </audio>
+                #         """
+                #     audio_place.markdown(
+                #         md,
+                #         unsafe_allow_html=True,
+                #     )
+                # time.sleep(1)
+                # audio_place.empty()
+
     # if len(result):
     #     text_place.text(result)
     # audio_place = st.empty()
