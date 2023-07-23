@@ -69,6 +69,7 @@ def create_video_frame_callback():
             result_queue.put(danger)
 
         return av.VideoFrame.from_ndarray(image, format="bgr24")
+
     return video_frame_callback
 
 
@@ -142,6 +143,8 @@ def webrtc_init():
                 # audio_place.empty()
             else:
                 text_place.text("no detection !")
+        else:
+            text_place.text("no results")
 
         # if len(result) != 0:
         #     autoplay_audio(recorded_audio_file)
