@@ -29,6 +29,7 @@ lock = threading.Lock()
 # img_container = {"img": None}
 obj_contatiner = {"obj": None}
 result_queue: "queue.Queue[List[Detection]]" = queue.Queue()
+frame_queue = queue.Queue()
 
 
 def create_video_frame_callback():
@@ -65,6 +66,7 @@ def create_video_frame_callback():
                 (warning_state_Algorithm(xmin, ymin, xmax, ymax, label_name, h, w))
             )
         result_queue.put(danger)
+        frame_queue.put(frame_count)
 
         return av.VideoFrame.from_ndarray(image, format="bgr24")
 
@@ -119,7 +121,9 @@ def webrtc_init():
 
     recorded_audio_file = "/app/streamlit_app/webcam/webrtc/output.mp3"
     text_place = st.empty()
-    # while ctx.state.playing:
+    while ctx.state.playing:
+        frame_num = frame_queue.get()
+        text_place.text(frame_num)
     #     if not result_queue.empty():
     #         result = result_queue.get()
     # if len(result):
