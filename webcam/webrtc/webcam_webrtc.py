@@ -131,7 +131,7 @@ def webrtc_init():
             text_place.text(frame_num)
             if len(result) != 0:
                 result.sort(key=lambda x: x[1], reverse=True)
-                danger_class, danger_level = result[0][0]
+                danger_class, danger_level = result[0]
                 danger_place.text(result)
 
                 lv, dir = WARNING_LEVELS[str(danger_level)]
