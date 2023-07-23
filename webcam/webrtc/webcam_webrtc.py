@@ -123,7 +123,7 @@ def webrtc_init():
     text_place = st.empty()
     while ctx.state.playing:
         text_place.text("what?")
-        if result_queue:
+        if not result_queue.empty():
             result = result_queue.get()
             if len(result):
                 text_place.text(result)
