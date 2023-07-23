@@ -63,7 +63,7 @@ def create_video_frame_callback():
             danger.append(
                 (warning_state_Algorithm(xmin, ymin, xmax, ymax, label_name, h, w))
             )
-        if frame_count % 20 == 0:
+        if frame_count % 50 == 0:
             result_queue.put(danger)
         frame_queue.put(frame_count)
 
