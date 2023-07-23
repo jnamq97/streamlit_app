@@ -54,7 +54,11 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
             color,
             2,
         )
-        danger.append(label_name)
+        # danger.append(label_name)
+        danger.append(
+            (warning_state_Algorithm(xmin, ymin, xmax, ymax, label_name, h, w))
+        )
+
     result_queue.put(danger)
 
     return av.VideoFrame.from_ndarray(image, format="bgr24")
