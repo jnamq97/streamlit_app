@@ -134,6 +134,7 @@ def webrtc_init():
                 danger_class, danger_level = result[0]
                 danger_place.text(result)
 
-                lv, dir = WARNING_LEVELS[str(danger_level)]
-                audio_file_path = f"/app/streamlit_app/webcam/webrtc/tts/{danger_class}_{lv}_{dir}.mp3"
-                autoplay_audio(audio_file_path)
+                if danger_level != 0:  # except safe
+                    lv, dir = WARNING_LEVELS[str(danger_level)]
+                    audio_file_path = f"/app/streamlit_app/webcam/webrtc/tts/{danger_class}_{lv}_{dir}.mp3"
+                    autoplay_audio(audio_file_path)
