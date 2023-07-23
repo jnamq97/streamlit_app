@@ -122,6 +122,7 @@ def webrtc_init():
     recorded_audio_file = "/app/streamlit_app/webcam/webrtc/output.mp3"
     text_place = st.empty()
     while ctx.state.playing:
+        text_place.text("what?")
         if result_queue:
             result = result_queue.get()
             if len(result):
