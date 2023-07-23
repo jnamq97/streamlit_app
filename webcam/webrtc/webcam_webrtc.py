@@ -112,6 +112,7 @@ def webrtc_init():
     text_place = st.empty()
     while ctx.state.playing:
         result = result_queue.get()
-        text_place.text(result)
+        if len(result) != 0:
+            text_place.text(result)
         # if len(result) != 0:
         #     autoplay_audio(recorded_audio_file)
