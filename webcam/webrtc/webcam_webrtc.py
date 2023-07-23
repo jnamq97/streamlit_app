@@ -23,9 +23,6 @@ def generate_label_colors(classes=29):
 
 
 COLORS = generate_label_colors()
-event_triggered = True
-# img_container = {"img": None}
-obj_contatiner = {"obj": None}
 result_queue: "queue.Queue[List[Detection]]" = queue.Queue()
 frame_queue = queue.Queue()
 
@@ -72,11 +69,6 @@ def create_video_frame_callback():
     return video_frame_callback
 
 
-# def play_recorded_audio(recorded_audio_file):
-#     audio = AudioSegment.from_file(recorded_audio_file)
-#     play(audio)
-
-
 def autoplay_audio(file_path: str):
     audio_place = st.empty()
     with open(file_path, "rb") as f:
@@ -119,36 +111,17 @@ def webrtc_init():
     )
 
     recorded_audio_file = "/app/streamlit_app/webcam/webrtc/output.mp3"
+    # recorded_audio_files = {} ## dictionary로 파일 경로들 저장하거나 경로를 조합해야할듯.
     text_place = st.empty()
     danger_place = st.empty()
     while ctx.state.playing:
         frame_num = frame_queue.get()
-        if frame_num % 50 == 0:  # for every 20 frames
+        if frame_num % 50 == 0:  # for every 50 frames
             result = result_queue.get()
             text_place.text(frame_num)
             if len(result) != 0:
-                autoplay_audio(recorded_audio_file)
-    # if len(result):
-    #     text_place.text(result)
-    # audio_place = st.empty()
-    # with open(recorded_audio_file, "rb") as f:
-    #     data = f.read()
-    #     b64 = base64.b64encode(data).decode()
-    #     md = f"""
-    #         <audio controls autoplay="true">
-    #         <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
-    #         </audio>
-    #         """
-    #     audio_place.markdown(
-    #         md,
-    #         unsafe_allow_html=True,
-    #     )
-    # time.sleep(2)
-    # audio_place.empty()
-    # else:
-    #     text_place.text("no detection !")
-    # else:
-    #     text_place.text("no results")
+                result.sort(key=lambda x: x[1], reverse=True)
+                danger_class = result[0][0]
+                danger_place.text(result)
 
-    # if len(result) != 0:
-    #     autoplay_audio(recorded_audio_file)
+                autoplay_audio(recorded_audio_file)
