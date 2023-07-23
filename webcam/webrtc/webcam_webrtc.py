@@ -122,28 +122,27 @@ def webrtc_init():
     recorded_audio_file = "/app/streamlit_app/webcam/webrtc/output.mp3"
     text_place = st.empty()
     while ctx.state.playing:
-        text_place.text("what?")
         if not result_queue.empty():
             result = result_queue.get()
-            if len(result):
-                text_place.text(result)
-                # audio_place = st.empty()
-                # with open(recorded_audio_file, "rb") as f:
-                #     data = f.read()
-                #     b64 = base64.b64encode(data).decode()
-                #     md = f"""
-                #         <audio controls autoplay="true">
-                #         <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
-                #         </audio>
-                #         """
-                #     audio_place.markdown(
-                #         md,
-                #         unsafe_allow_html=True,
-                #     )
-                # time.sleep(2)
-                # audio_place.empty()
-            else:
-                text_place.text("no detection !")
+            # if len(result):
+            #     text_place.text(result)
+            # audio_place = st.empty()
+            # with open(recorded_audio_file, "rb") as f:
+            #     data = f.read()
+            #     b64 = base64.b64encode(data).decode()
+            #     md = f"""
+            #         <audio controls autoplay="true">
+            #         <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+            #         </audio>
+            #         """
+            #     audio_place.markdown(
+            #         md,
+            #         unsafe_allow_html=True,
+            #     )
+            # time.sleep(2)
+            # audio_place.empty()
+            # else:
+            #     text_place.text("no detection !")
         else:
             text_place.text("no results")
 
