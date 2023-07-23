@@ -127,19 +127,19 @@ def webrtc_init():
             result = result_queue.get()
             if len(result):
                 text_place.text(result)
-                audio_place = st.empty()
-                with open(recorded_audio_file, "rb") as f:
-                    data = f.read()
-                    b64 = base64.b64encode(data).decode()
-                    md = f"""
-                        <audio controls autoplay="true">
-                        <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
-                        </audio>
-                        """
-                    audio_place.markdown(
-                        md,
-                        unsafe_allow_html=True,
-                    )
+                # audio_place = st.empty()
+                # with open(recorded_audio_file, "rb") as f:
+                #     data = f.read()
+                #     b64 = base64.b64encode(data).decode()
+                #     md = f"""
+                #         <audio controls autoplay="true">
+                #         <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+                #         </audio>
+                #         """
+                #     audio_place.markdown(
+                #         md,
+                #         unsafe_allow_html=True,
+                #     )
                 # time.sleep(2)
                 # audio_place.empty()
             else:
