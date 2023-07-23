@@ -91,7 +91,7 @@ def autoplay_audio(file_path: str):
             md,
             unsafe_allow_html=True,
         )
-    time.sleep(1)
+    time.sleep(1.5)
     audio_place.empty()
 
 
@@ -123,7 +123,7 @@ def webrtc_init():
     danger_place = st.empty()
     while ctx.state.playing:
         frame_num = frame_queue.get()
-        if frame_num % 20 == 0:  # for every 20 frames
+        if frame_num % 30 == 0:  # for every 30 frames
             result = result_queue.get()
             text_place.text(frame_num)
             if len(result) != 0:
