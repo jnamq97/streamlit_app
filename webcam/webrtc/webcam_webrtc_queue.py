@@ -127,7 +127,7 @@ def webrtc_init():
         # st.text(f"frame count : {frame_count}")
         if is_frame:
             frame_count += 1
-            if frame_count % 20 == 0:
+            if frame_count % 50 == 0:
                 if dangers is None:
                     continue
                 elif len(dangers) > 0:
