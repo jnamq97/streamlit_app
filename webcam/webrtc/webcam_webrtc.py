@@ -29,9 +29,16 @@ lock = threading.Lock()
 # img_container = {"img": None}
 obj_contatiner = {"obj": None}
 result_queue: "queue.Queue[List[Detection]]" = queue.Queue()
+frame_count = 0
+
+
+def count_frames():
+    global frame_count
+    frame_count += 1
 
 
 def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
+    count_frames()
     image = frame.to_ndarray(format="bgr24")
     preds = model(image)
     h, w = preds[0].orig_shape
@@ -111,26 +118,27 @@ def webrtc_init():
     recorded_audio_file = "/app/streamlit_app/webcam/webrtc/output.mp3"
     text_place = st.empty()
     while ctx.state.playing:
-        result = result_queue.get()
-        if len(result):
-            text_place.text(result)
-            audio_place = st.empty()
-            with open(recorded_audio_file, "rb") as f:
-                data = f.read()
-                b64 = base64.b64encode(data).decode()
-                md = f"""
-                    <audio controls autoplay="true">
-                    <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
-                    </audio>
-                    """
-                audio_place.markdown(
-                    md,
-                    unsafe_allow_html=True,
-                )
-            # time.sleep(2)
-            # audio_place.empty()
-        else:
-            text_place.text("no detection !")
+        text_place.text(frame_count)
+        # result = result_queue.get()
+        # if len(result):
+        #     text_place.text(result)
+        #     audio_place = st.empty()
+        #     with open(recorded_audio_file, "rb") as f:
+        #         data = f.read()
+        #         b64 = base64.b64encode(data).decode()
+        #         md = f"""
+        #             <audio controls autoplay="true">
+        #             <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+        #             </audio>
+        #             """
+        #         audio_place.markdown(
+        #             md,
+        #             unsafe_allow_html=True,
+        #         )
+        #     # time.sleep(2)
+        #     # audio_place.empty()
+        # else:
+        #     text_place.text("no detection !")
 
         # if len(result) != 0:
         #     autoplay_audio(recorded_audio_file)
