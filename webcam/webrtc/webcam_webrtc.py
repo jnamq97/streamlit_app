@@ -64,9 +64,7 @@ def create_video_frame_callback():
             danger.append(
                 (warning_state_Algorithm(xmin, ymin, xmax, ymax, label_name, h, w))
             )
-
-        if frame_count % 300 == 0:
-            result_queue.put(danger)
+        result_queue.put(danger)
 
         return av.VideoFrame.from_ndarray(image, format="bgr24")
 
