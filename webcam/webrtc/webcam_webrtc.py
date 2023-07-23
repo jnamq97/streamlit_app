@@ -113,7 +113,7 @@ def webrtc_init():
     while ctx.state.playing:
         result = result_queue.get()
         if len(result):
-            text_place.text(result)
+            # text_place.text(result)
             audio_place = st.empty()
             with open(recorded_audio_file, "rb") as f:
                 data = f.read()
