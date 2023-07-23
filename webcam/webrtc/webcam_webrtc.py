@@ -127,8 +127,8 @@ def webrtc_init():
                     md,
                     unsafe_allow_html=True,
                 )
-            time.sleep(2)
-            audio_place.empty()
+            # time.sleep(2)
+            # audio_place.empty()
         else:
             text_place.text("no detection !")
 
