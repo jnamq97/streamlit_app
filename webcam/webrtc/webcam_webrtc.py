@@ -79,7 +79,7 @@ def create_video_frame_callback():
     return video_frame_callback
 
 
-def autoplay_audio(file_path: str, playback_rate=1.5):
+def autoplay_audio(file_path: str, playback_rate=2.0):
     audio_place = st.empty()
     with open(file_path, "rb") as f:
         data = f.read()
