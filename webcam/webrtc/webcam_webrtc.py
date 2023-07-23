@@ -128,22 +128,6 @@ def webrtc_init():
             text_place.text(frame_num)
             if len(result) != 0:
                 autoplay_audio(recorded_audio_file)
-                # audio_place = st.empty()
-                # with open(recorded_audio_file, "rb") as f:
-                #     data = f.read()
-                #     b64 = base64.b64encode(data).decode()
-                #     md = f"""
-                #         <audio controls autoplay="true">
-                #         <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
-                #         </audio>
-                #         """
-                #     audio_place.markdown(
-                #         md,
-                #         unsafe_allow_html=True,
-                #     )
-                # time.sleep(1)
-                # audio_place.empty()
-
     # if len(result):
     #     text_place.text(result)
     # audio_place = st.empty()
