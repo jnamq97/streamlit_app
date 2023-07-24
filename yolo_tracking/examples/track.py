@@ -7,7 +7,7 @@ import numpy as np
 import cv2
 from types import SimpleNamespace
 
-from boxmot.tracker_zoo import create_tracker
+from yolo_tracking.boxmot.tracker_zoo import create_tracker
 from boxmot.utils import ROOT, WEIGHTS, FILE
 from boxmot.utils.checks import TestRequirements
 from boxmot.utils import logger as LOGGER
