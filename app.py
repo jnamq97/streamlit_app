@@ -45,7 +45,7 @@ def main():
             st.info("Input Video File(.avi or .mp4) to Inference")
             uploaded_file = st.file_uploader(
                 "Input Video",
-                accept_multiple_files=False,
+                accept_multiple_files=True,
                 type=["avi", "mp4"],
                 label_visibility="collapsed",
             )
@@ -58,9 +58,8 @@ def main():
                 # track.py
                 opt = parse_opt()
 
-                if uploaded_file>1:
+                if uploaded_file:
                     for file in uploaded_file:
-                        st.text(file)
                         # save file to tempDB
                         saved_dir = os.path.join(
                             "/app/streamlit_app/yolo_tracking/examples/tempDB",
@@ -77,8 +76,6 @@ def main():
 
                         result = run(vars(opt))
                         st.success("Inference Complete !")
-                elif:
-                    
 
                 else:
                     st.error("Please Input Necessary Data !")
