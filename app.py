@@ -58,13 +58,13 @@ def main():
                 # track.py
                 opt = parse_opt()
 
-                if uploaded_file:
+                if uploaded_file>1:
                     for file in uploaded_file:
                         st.text(file)
                         # save file to tempDB
                         saved_dir = os.path.join(
                             "/app/streamlit_app/yolo_tracking/examples/tempDB",
-                            file[0].name,
+                            file.name,
                         )
                         with open(saved_dir, "wb") as f:
                             f.write(file.getbuffer())
@@ -77,6 +77,8 @@ def main():
 
                         result = run(vars(opt))
                         st.success("Inference Complete !")
+                elif:
+                    
 
                 else:
                     st.error("Please Input Necessary Data !")
