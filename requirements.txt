@@ -18,5 +18,6 @@ ultralytics
 py-cpuinfo
 gtts
 pydub
+numpy
 lap>=0.4
 # git+https://github.com/mikel-brostrom/yolo_tracking.git
