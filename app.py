@@ -15,6 +15,8 @@ def show_app(image_placeholder, img):
 
 
 def main():
+    os.environ["yolo_tracking"] = st.secrets["PATH"]
+
     st.title("APAS (Advanced Pedestrian Assistance System)")
     st.subheader("CV-10 : Bro3Sis1 Team")
     first_call = True

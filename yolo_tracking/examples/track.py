@@ -7,7 +7,7 @@ import numpy as np
 import cv2
 from types import SimpleNamespace
 
-from yolo_tracking.boxmot.tracker_zoo import create_tracker
+from boxmot.tracker_zoo import create_tracker
 from boxmot.utils import ROOT, WEIGHTS, FILE
 from boxmot.utils.checks import TestRequirements
 from boxmot.utils import logger as LOGGER
@@ -58,6 +58,7 @@ def on_predict_start(predictor):
             predictor.args.reid_model,
             predictor.device,
             predictor.args.half,
+            predictor.args.per_class,
         )
         predictor.trackers.append(tracker)
 
@@ -394,6 +395,9 @@ def parse_opt():
 
     parser.add_argument(
         "--streamlit", type=bool, default=False, help="called by streamlit"
+    )
+    parser.add_argument(
+        "--per-class", action="store_true", help="not mix up classes when tracking"
     )
 
     opt = parser.parse_args()
