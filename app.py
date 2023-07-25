@@ -2,13 +2,15 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import time
-from yolo_tracking.examples.track import *
 import os
 import cv2
 from webcam.socket.webcam_server import main as webcam_main
 from webcam.webrtc.webcam_webrtc import create_video_frame_callback, webrtc_init
 from streamlit_webrtc import webrtc_streamer
 import sys
+sys.path.append(st.secrets["PATH"])
+sys.path.append("/mount/src/streamlit_app/yolo_tracking/boxmot")
+from yolo_tracking.examples.track import *
 
 
 def show_app(image_placeholder, img):
@@ -17,8 +19,7 @@ def show_app(image_placeholder, img):
 
 def main():
     # os.environ["yolo_tracking"] = st.secrets["PATH"]
-    sys.path.append(st.secrets["PATH"])
-    sys.path.append("/mount/src/streamlit_app/yolo_tracking/boxmot")
+    
     st.title("APAS (Advanced Pedestrian Assistance System)")
     st.subheader("CV-10 : Bro3Sis1 Team")
     first_call = True
