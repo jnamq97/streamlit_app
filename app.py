@@ -18,6 +18,7 @@ def show_app(image_placeholder, img):
 def main():
     # os.environ["yolo_tracking"] = st.secrets["PATH"]
     sys.path.append(st.secrets["PATH"])
+    sys.path.append("/mount/src/streamlit_app/yolo_tracking/boxmot")
     st.title("APAS (Advanced Pedestrian Assistance System)")
     st.subheader("CV-10 : Bro3Sis1 Team")
     first_call = True
