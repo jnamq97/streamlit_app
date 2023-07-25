@@ -64,7 +64,7 @@ def main():
                     for file in uploaded_file:
                         # save file to tempDB
                         saved_dir = os.path.join(
-                            "/app/streamlit_app/yolo_tracking/examples/tempDB",
+                            "/mount/src/streamlit_app/yolo_tracking/examples/tempDB",
                             file.name,
                         )
                         with open(saved_dir, "wb") as f:
