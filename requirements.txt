@@ -19,4 +19,4 @@ py-cpuinfo
 gtts
 pydub
 
-git+https://github.com/mikel-brostrom/yolo_tracking.git
+# git+https://github.com/mikel-brostrom/yolo_tracking.git
