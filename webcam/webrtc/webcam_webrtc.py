@@ -101,6 +101,17 @@ def autoplay_audio(file_path: str, playback_rate=2.0):
     audio_place.empty()
 
 
+def mobile_autoplay_audio(file_path: str, playback_rate=2.0):
+    button_place = st.empty()
+    play_button = button_place.button("Play Audio", key="play_button")
+    st.execute_script("document.getElementById('play_button').click()")
+    if play_button:
+        audio = AudioSegment.from_file(file_path)
+        play(audio)
+        time.sleep(audio.duration_seconds)  # 재생 시간만큼 대기
+        # 자동으로 버튼을 다시 클릭
+
+
 def webrtc_init():
     global model
 
@@ -140,7 +151,7 @@ def webrtc_init():
                     text_place.warning("주의하세요 !")
                     lv, dir = WARNING_LEVELS[str(danger_level)]
                     audio_file_path = f"/mount/src/streamlit_app/webcam/webrtc/tts/{danger_class}_{lv}_{dir}.mp3"
-                    autoplay_audio(audio_file_path)
+                    mobile_autoplay_audio(audio_file_path)
                 else:
                     text_place.success("안전합니다 !")
             else:
