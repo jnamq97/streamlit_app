@@ -101,28 +101,18 @@ def autoplay_audio(file_path: str, playback_rate=2.0):
     audio_place.empty()
 
 
-def mobile_autoplay_audio(file_path: str, playback_rate=2.0):
-    audio_place = st.empty()
+def custom_audio_frame_callback(audio_frame: av.AudioFrame) -> av.AudioFrame:
+    # Read the desired MP3 file
+    mp3_file_path = "/mount/src/streamlit_app/webcam/webrtc/output.mp3"
+    audio = AudioSegment.from_file(mp3_file_path)
 
-    with open(file_path, "rb") as f:
-        data = f.read()
-        b64 = base64.b64encode(data).decode()
-        md = f"""
-            <audio controls autoplay="true" id="audio_element">
-                <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
-            </audio>
-            <script>
-                var audioElement = document.getElementById("audio_element");
-                audioElement.playbackRate = {playback_rate};
-                audioElement.play();
-            </script>
-            """
-        audio_place.markdown(
-            md,
-            unsafe_allow_html=True,
-        )
-    time.sleep(1.5)
-    audio_place.empty()
+    # Convert the audio to bytes
+    audio_bytes = audio.raw_data
+
+    # Set the audio_frame's buffer to the custom audio bytes
+    audio_frame.buffer = audio_bytes
+
+    return audio_frame
 
 
 def webrtc_init():
@@ -142,8 +132,9 @@ def webrtc_init():
 
     ctx = webrtc_streamer(
         rtc_configuration={"iceServers": token.ice_servers},
-        media_stream_constraints={"video": True, "audio": False},
+        media_stream_constraints={"video": True, "audio": True},
         video_frame_callback=video_frame_cb,
+        audio_frame_callback=custom_audio_frame_callback,
         async_processing=True,
         key="apas",
     )

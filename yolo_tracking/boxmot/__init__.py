@@ -1,16 +1,12 @@
-__version__ = '10.0.15'
-
-from pathlib import Path
-
-from boxmot.strongsort.strong_sort import StrongSORT
-from boxmot.ocsort.ocsort import OCSort as OCSORT
-from boxmot.bytetrack.byte_tracker import BYTETracker
-from boxmot.botsort.bot_sort import BoTSORT
-from boxmot.deepocsort.ocsort import OCSort as DeepOCSORT
-from boxmot.deep.reid_multibackend import ReIDDetectMultiBackend
+__version__ = "10.0.16"
 
 from boxmot.tracker_zoo import create_tracker, get_tracker_config
+from boxmot.trackers.botsort.bot_sort import BoTSORT
+from boxmot.trackers.bytetrack.byte_tracker import BYTETracker
+from boxmot.trackers.deepocsort.deep_ocsort import DeepOCSort as DeepOCSORT
+from boxmot.trackers.ocsort.ocsort import OCSort as OCSORT
+from boxmot.trackers.strongsort.strong_sort import StrongSORT
 
-
-__all__ = '__version__',\
-          'StrongSORT', 'OCSORT', 'BYTETracker', 'BoTSORT', 'DeepOCSORT'
+__all__ = ("__version__",
+           "StrongSORT", "OCSORT", "BYTETracker", "BoTSORT", "DeepOCSORT",
+           "create_tracker", "get_tracker_config")

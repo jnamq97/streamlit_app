@@ -3,24 +3,31 @@
 
 <div align="center">
   <p>
-  <img src="boxmot/strongsort/results/track_all_seg_1280_025conf.gif" width="400"/>
+  <img src="assets/images/track_all_seg_1280_025conf.gif" width="400"/>
   </p>
   <br>
   <div>
   <a href="https://github.com/mikel-brostrom/yolov8_tracking/actions/workflows/ci.yml"><img src="https://github.com/mikel-brostrom/yolov8_tracking/actions/workflows/ci.yml/badge.svg" alt="CI CPU testing"></a>
   <a href="https://pepy.tech/project/boxmot"><img src="https://static.pepy.tech/badge/boxmot"></a>
-  <br>  
+  <br>
   <a href="https://colab.research.google.com/drive/18nIqkBr68TkK8dHdarxTco6svHUJGggY?usp=sharing"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>
-<a href="https://doi.org/10.5281/zenodo.7629840"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.7629840.svg" alt="DOI"></a>
+<a href="https://doi.org/10.5281/zenodo.8132989"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.8132989.svg" alt="DOI"></a>
+
   </div>
 </div>
 
 
 ## Introduction
 
-This repo contains a collections of state-of-the-art multi-object trackers. Supported ones at the moment are: [DeepOCSORT](https://arxiv.org/abs/2302.11813) , [BoTSORT](https://arxiv.org/abs/2206.14651) , [StrongSORT](https://github.com/dyhBUPT/StrongSORT)[](https://arxiv.org/abs/2202.13514), [OCSORT](https://github.com/noahcao/OC_SORT)[](https://arxiv.org/abs/2203.14360) and [ByteTrack](https://github.com/ifzhang/ByteTrack)[](https://arxiv.org/abs/2110.06864). DeepOCSORT, BoTSORT and StrongSORT are based on motion + appearance description; OCSORT and ByteTrack are based on motion only. For the methods using appearance description, lightweight state-of-the-art ReID models ([LightMBN](https://github.com/jixunbo/LightMBN)[](https://arxiv.org/pdf/2101.10774.pdf), [OSNet](https://github.com/KaiyangZhou/deep-person-reid)[](https://arxiv.org/abs/1905.00953) and more) are downloaded automatically as well.
+This repo contains a collections of pluggable state-of-the-art multi-object trackers for object detectors. We provide examples on how to use this package together with popular object detection models such as: [Yolov8](https://github.com/ultralytics), [Yolo-NAS](https://github.com/Deci-AI/super-gradients) and [YOLOX](https://github.com/Megvii-BaseDetection/YOLOX).
 
-We provide examples on how to use this package together with popular object detection models. Right now [Yolov8](https://github.com/ultralytics), [Yolo-NAS](https://github.com/Deci-AI/super-gradients) and YOLOX are available.
+<details>
+<summary>Supported tracking methods</summary>
+
+[DeepOCSORT](https://arxiv.org/abs/2302.11813) , [BoTSORT](https://arxiv.org/abs/2206.14651) , [StrongSORT](https://github.com/dyhBUPT/StrongSORT)[](https://arxiv.org/abs/2202.13514), [OCSORT](https://github.com/noahcao/OC_SORT)[](https://arxiv.org/abs/2203.14360) and [ByteTrack](https://github.com/ifzhang/ByteTrack)[](https://arxiv.org/abs/2110.06864). DeepOCSORT, BoTSORT and StrongSORT are based on motion + appearance description; OCSORT and ByteTrack are based on motion only. For the methods using appearance description, lightweight state-of-the-art ReID models ([LightMBN](https://github.com/jixunbo/LightMBN)[](https://arxiv.org/pdf/2101.10774.pdf), [OSNet](https://github.com/KaiyangZhou/deep-person-reid)[](https://arxiv.org/abs/1905.00953) and more) are downloaded automatically as well.
+
+
+</details>
 
 <details>
 <summary>Tutorials</summary>
@@ -30,9 +37,9 @@ We provide examples on how to use this package together with popular object dete
 * [ReID model export to ONNX, OpenVINO, TensorRT and TorchScript](https://github.com/mikel-brostrom/yolov8_tracking/wiki/ReID-multi-framework-model-export)&nbsp;
 * [Evaluation on custom tracking dataset](https://github.com/mikel-brostrom/yolov8_tracking/wiki/How-to-evaluate-on-custom-tracking-dataset)&nbsp;
 * [ReID inference acceleration with Nebullvm](https://colab.research.google.com/drive/1APUZ1ijCiQFBR9xD0gUvFUOC8yOJIvHm?usp=sharing)&nbsp;
-  
+
   </details>
-  
+
 <details>
 <summary>Experiments</summary>
 
@@ -41,9 +48,9 @@ In inverse chronological order:
 * [Evaluation of the params evolved for first half of MOT17 on the complete MOT17](https://github.com/mikel-brostrom/Yolov5_StrongSORT_OSNet/wiki/Evaluation-of-the-params-evolved-for-first-half-of-MOT17-on-the-complete-MOT17)
 
 * [Segmentation model vs object detetion model on MOT metrics](https://github.com/mikel-brostrom/Yolov5_StrongSORT_OSNet/wiki/Segmentation-model-vs-object-detetion-model-on-MOT-metrics)
-  
+
 * [Effect of masking objects before feature extraction](https://github.com/mikel-brostrom/Yolov5_StrongSORT_OSNet/wiki/Masked-detection-crops-vs-regular-detection-crops-for-ReID-feature-extraction)
-  
+
 * [conf-thres vs HOTA, MOTA and IDF1](https://github.com/mikel-brostrom/Yolov5_StrongSORT_OSNet/wiki/conf-thres-vs-MOT-metrics)
 
 * [Effect of KF updates ahead for tracks with no associations on MOT17](https://github.com/mikel-brostrom/Yolov5_StrongSORT_OSNet/wiki/Effect-of-KF-updates-ahead-for-tracks-with-no-associations,-on-MOT17)
@@ -92,7 +99,7 @@ pip install boxmot
 
 <details>
 <summary>Yolo models</summary>
-  
+
 
 
 ```bash
@@ -103,7 +110,7 @@ $ python examples/track.py --yolo-model yolov8n       # bboxes only
                                         yolov8n-pose  # bboxes + pose estimation
 
 ```
-  
+
   </details>
 
 <details>
@@ -116,7 +123,7 @@ $ python examples/track.py --tracking-method deepocsort
                                              bytetrack
                                              botsort
 ```
-  
+
 </details>
 
 <details>
@@ -151,7 +158,7 @@ $ python examples/track.py --source 0 --reid-model lmbn_n_cuhk03_d.pt
 ```
 
 </details>
-  
+
 <details>
 <summary>Filter tracked classes</summary>
 
@@ -169,8 +176,8 @@ python examples/track.py --source 0 --yolo-model yolov8s.pt --classes 16 17  # C
 
 <details>
 <summary>MOT compliant results</summary>
-  
-Can be saved to your experiment folder `runs/track/exp*/` by 
+
+Can be saved to your experiment folder `runs/track/exp*/` by
 
 ```bash
 python examples/track.py --source ... --save-mot
@@ -179,7 +186,7 @@ python examples/track.py --source ... --save-mot
 </details>
 
 </details>
-  
+
 <details>
 <summary>Evaluation</summary>
 
@@ -187,12 +194,12 @@ Evaluate a combination of detector, tracking method and ReID model on standard M
 
 ```bash
 $ python3 examples/val.py --yolo-model yolo_nas_s.pt --reid-model osnetx1_0_dukemtcereid.pt --tracking-method deepocsort --benchmark MOT16
-                          --yolo-model yolox_n.pt    --reid-model osnet_ain_x1_0_msmt17.pt  --tracking-method ocsort     --benchmark MOT17 
+                          --yolo-model yolox_n.pt    --reid-model osnet_ain_x1_0_msmt17.pt  --tracking-method ocsort     --benchmark MOT17
                           --yolo-model yolov8s.pt    --reid-model lmbn_n_market.pt          --tracking-method strongsort --benchmark <your-custom-dataset>
 ```
-  
+
 </details>
-  
+
 <details>
 <summary>Evolution</summary>
 
@@ -204,12 +211,12 @@ $ python examples/evolve.py --tracking-method strongsort --benchmark MOT17 --n-t
 ```
 
 The set of hyperparameters leading to the best HOTA result are written to the tracker's config file.
-  
+
 </details>
 
 
 ## Custom object detection model example
-  
+
 <details>
 <summary>Minimalistic</summary>
 
@@ -223,12 +230,12 @@ tracker = DeepOCSORT(
   device='cuda:0',  # 'cpu', 'cuda:0', 'cuda:1', ... 'cuda:N'
   fp16=True,  # wether to run the ReID model with half precision or not
 )
-  
+
 cap = cv.VideoCapture(0)
 while True:
     ret, im = cap.read()
     ...
-    # dets (numpy.ndarray): 
+    # dets (numpy.ndarray):
     #  - your model's nms:ed outputs of shape Nx6 (x, y, x, y, conf, cls)
     # im   (numpy.ndarray):
     #  - the original hxwx3 image (for better ReID results)
@@ -236,13 +243,13 @@ while True:
     tracker_outputs = tracker.update(dets, im)  # --> (x, y, x, y, id, conf, cls)
     ...
 ```
-  
+
 </details>
 
 
 <details>
 <summary>Complete</summary>
-  
+
 ```python
 from boxmot import DeepOCSORT
 from pathlib import Path
@@ -266,9 +273,9 @@ while True:
     # substitute by your object detector, output has to be N X (x, y, x, y, conf, cls)
     dets = np.array([[144, 212, 578, 480, 0.82, 0],
                     [425, 281, 576, 472, 0.56, 65]])
-    
+
     ts = tracker.update(dets, im) # --> (x, y, x, y, id, conf, cls)
-    
+
     xyxys = ts[:, 0:4].astype('int') # float64 to int
     ids = ts[:, 4].astype('int') # float64 to int
     confs = ts[:, 5]
@@ -281,7 +288,7 @@ while True:
                 im,
                 (xyxy[0], xyxy[1]),
                 (xyxy[2], xyxy[3]),
-                color,  
+                color,
                 thickness
             )
             cv2.putText(
@@ -300,15 +307,15 @@ while True:
     # break on pressing q
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
-    
+
 vid.release()
 cv2.destroyAllWindows()
 ```
 
 </details>
-  
 
-## Contact 
 
-For Yolov8 tracking bugs and feature requests please visit [GitHub Issues](https://github.com/mikel-brostrom/Yolov5_StrongSORT_OSNet/issues). 
+## Contact
+
+For Yolov8 tracking bugs and feature requests please visit [GitHub Issues](https://github.com/mikel-brostrom/Yolov5_StrongSORT_OSNet/issues).
 For business inquiries or professional support requests please send an email to: yolov5.deepsort.pytorch@gmail.com

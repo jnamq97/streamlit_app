@@ -1,13 +1,24 @@
 .vscode/
+.venv/
+.eggs/
 env/
-
+*.DS_Store
+.coverage
+htmlcov/
 # interpreter bytecode
 __pycache__/
 
 # experiment results
 runs/
 videos/
-weights
+
+# Downloaded weights
+weights/*.pt
+weights/*.torchscript
+weights/*.onnx
+weights/*_openvino_model
+weights/*.engine
+weights/*.tflite
 
 # evaluation tools folder
 val_utils/
@@ -34,3 +45,6 @@ tf_models/
 build/
 dist/
 *.egg-info/
+
+# cmc debug images
+boxmot/motion/cmc/*.jpg
