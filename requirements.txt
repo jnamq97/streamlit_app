@@ -22,4 +22,4 @@ wheel
 # lap==0.4.0
 
 
-# git+https://github.com/mikel-brostrom/yolo_tracking.git
+git+https://github.com/mikel-brostrom/yolo_tracking.git
