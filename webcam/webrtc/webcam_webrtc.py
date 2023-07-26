@@ -103,12 +103,56 @@ def autoplay_audio(file_path: str, playback_rate=2.0):
 
 def mobile_autoplay_audio(file_path: str, playback_rate=2.0):
     audio_place = st.empty()
-    audio_file = open(file_path, "rb")
-    audio_bytes = audio_file.read()
+    trigger_button = st.button("Play Audio")
 
-    audio_place.audio(audio_bytes, format="audio/mp3", start_time=0, autoplay=True)
-    time.sleep(1.8)
+    with open(file_path, "rb") as f:
+        data = f.read()
+        b64 = base64.b64encode(data).decode()
+        md = f"""
+            <audio controls autoplay="false" id="audio_element">
+                <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+            </audio>
+            <script>
+                var audioElement = document.getElementById("audio_element");
+                audioElement.playbackRate = {playback_rate};
+                
+                function triggerPlayback() {{
+                    audioElement.play();
+                }}
+
+                if (window.matchMedia('(display-mode: standalone)').matches) {{
+                    // On mobile (PWA mode), trigger playback immediately
+                    triggerPlayback();
+                }} else {{
+                    // On other platforms, use a button to trigger playback
+                    document.getElementById('trigger_button').addEventListener('click', triggerPlayback);
+                }}
+            </script>
+            """
+        audio_place.markdown(
+            md,
+            unsafe_allow_html=True,
+        )
+
+    # Wait for the trigger button to be clicked before continuing
+    if not window.matchMedia("(display-mode: standalone)").matches:
+        while not trigger_button:
+            time.sleep(0.1)
+
     audio_place.empty()
+
+
+# Set page configuration to run as a PWA on both Chrome and Safari
+st.set_page_config(
+    page_title="Your App Title",
+    page_icon=":icon:",
+    layout="wide",
+    initial_sidebar_state="expanded",
+    mobile_app=True,
+)
+
+# Usage example
+autoplay_audio("path/to/your/audio.mp3", playback_rate=2.0)
 
 
 def webrtc_init():
