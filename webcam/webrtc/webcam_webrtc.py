@@ -106,7 +106,8 @@ def mobile_autoplay_audio(file_path: str, playback_rate=2.0):
     audio_file = open(file_path, "rb")
     audio_bytes = audio_file.read()
 
-    audio_place.audio(audio_bytes, format="audio/mp3", start_time=0)
+    audio_place.audio(audio_bytes, format="audio/mp3", start_time=0, autoplay=True)
+    time.sleep(1.8)
     audio_place.empty()
 
 
