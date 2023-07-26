@@ -103,12 +103,11 @@ def autoplay_audio(file_path: str, playback_rate=2.0):
 
 def mobile_autoplay_audio(file_path: str, playback_rate=2.0):
     audio_place = st.empty()
-    with open(file_path, "rb") as f:
-        data = f.read()
-        b64 = base64.b64encode(data).decode()
-        audio_tag = f'<audio controls playbackRate="{playback_rate}" type="audio/mp3" preload="auto" src="data:audio/mp3;base64,{b64}"></audio>'
-        audio_place.markdown(audio_tag, unsafe_allow_html=True)
+    audio_file = open(file_path, "rb")
+    audio_bytes = audio_file.read()
 
+    audio_place.audio(audio_bytes, format="audio/mp3", start_time=0)
+    audio_place.empty()
 
 
 def webrtc_init():
