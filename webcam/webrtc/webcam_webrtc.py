@@ -102,14 +102,13 @@ def autoplay_audio(file_path: str, playback_rate=2.0):
 
 
 def mobile_autoplay_audio(file_path: str, playback_rate=2.0):
-    button_place = st.empty()
-    play_button = button_place.button("Play Audio", key="play_button")
-    st.execute_script("document.getElementById('play_button').click()")
-    if play_button:
-        audio = AudioSegment.from_file(file_path)
-        play(audio)
-        time.sleep(audio.duration_seconds)  # 재생 시간만큼 대기
-        # 자동으로 버튼을 다시 클릭
+    audio_place = st.empty()
+    with open(file_path, "rb") as f:
+        data = f.read()
+        b64 = base64.b64encode(data).decode()
+        audio_tag = f'<audio controls playbackRate="{playback_rate}" type="audio/mp3" preload="auto" src="data:audio/mp3;base64,{b64}"></audio>'
+        audio_place.markdown(audio_tag, unsafe_allow_html=True)
+
 
 
 def webrtc_init():
