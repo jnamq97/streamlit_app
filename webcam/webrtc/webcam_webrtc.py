@@ -104,42 +104,29 @@ def autoplay_audio(file_path: str, playback_rate=2.0):
 def mobile_autoplay_audio(file_path: str, playback_rate=2.0):
     audio_place = st.empty()
     trigger_button = st.button("Play Audio")
-
-    with open(file_path, "rb") as f:
-        data = f.read()
-        b64 = base64.b64encode(data).decode()
-        md = f"""
-            <audio controls autoplay="false" id="audio_element">
-                <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
-            </audio>
-            <script>
-                var audioElement = document.getElementById("audio_element");
-                audioElement.playbackRate = {playback_rate};
-                
-                function triggerPlayback() {{
+    trigger_button = True
+    
+    if trigger_button:
+        with open(file_path, "rb") as f:
+            data = f.read()
+            b64 = base64.b64encode(data).decode()
+            md = f"""
+                <audio controls autoplay="true" id="audio_element">
+                    <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+                </audio>
+                <script>
+                    var audioElement = document.getElementById("audio_element");
+                    audioElement.playbackRate = {playback_rate};
                     audioElement.play();
-                }}
-
-                if (window.matchMedia('(display-mode: standalone)').matches) {{
-                    // On mobile (PWA mode), trigger playback immediately
-                    triggerPlayback();
-                }} else {{
-                    // On other platforms, use a button to trigger playback
-                    document.getElementById('trigger_button').addEventListener('click', triggerPlayback);
-                }}
-            </script>
-            """
-        audio_place.markdown(
-            md,
-            unsafe_allow_html=True,
-        )
-
-    # Wait for the trigger button to be clicked before continuing
-    if not window.matchMedia("(display-mode: standalone)").matches:
-        while not trigger_button:
-            time.sleep(0.1)
-
+                </script>
+                """
+            audio_place.markdown(
+                md,
+                unsafe_allow_html=True,
+            )
+    
     audio_place.empty()
+
 
 
 def webrtc_init():
