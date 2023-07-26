@@ -1,0 +1,10 @@
+torch>=1.7.0
+torchvision>=0.8.1
+numpy==1.23.1
+loguru>=0.7.0
+opencv-python>=4.6.0
+PyYAML>=5.3.1
+pandas>=1.1.4
+gdown>=4.7.1
+GitPython>=3.1.0
+filterpy>=1.4.5

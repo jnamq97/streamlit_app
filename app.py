@@ -8,7 +8,8 @@ from webcam.socket.webcam_server import main as webcam_main
 from webcam.webrtc.webcam_webrtc import create_video_frame_callback, webrtc_init
 from streamlit_webrtc import webrtc_streamer
 import sys
-from yolo_tracking.examples.track import *
+
+# from yolo_tracking.examples.track import *
 
 
 def show_app(image_placeholder, img):
@@ -55,33 +56,33 @@ def main():
 
         button = st.button("Start Inference")
 
-        with st.spinner("Inference In Progress"):
-            if button:
-                button = False
-                # track.py
-                opt = parse_opt()
+        # with st.spinner("Inference In Progress"):
+        #     if button:
+        #         button = False
+        #         # track.py
+        #         opt = parse_opt()
 
-                if uploaded_file:
-                    for file in uploaded_file:
-                        # save file to tempDB
-                        saved_dir = os.path.join(
-                            "/mount/src/streamlit_app/yolo_tracking/examples/tempDB",
-                            file.name,
-                        )
-                        with open(saved_dir, "wb") as f:
-                            f.write(file.getbuffer())
+        #         if uploaded_file:
+        #             for file in uploaded_file:
+        #                 # save file to tempDB
+        #                 saved_dir = os.path.join(
+        #                     "/mount/src/streamlit_app/yolo_tracking/examples/tempDB",
+        #                     file.name,
+        #                 )
+        #                 with open(saved_dir, "wb") as f:
+        #                     f.write(file.getbuffer())
 
-                        st.success("File Uploaded !")
+        #                 st.success("File Uploaded !")
 
-                        opt.source = saved_dir
-                        opt.streamlit = True
-                        opt.show = True
+        #                 opt.source = saved_dir
+        #                 opt.streamlit = True
+        #                 opt.show = True
 
-                        result = run(vars(opt))
-                        st.success("Inference Complete !")
+        #                 result = run(vars(opt))
+        #                 st.success("Inference Complete !")
 
-                else:
-                    st.error("Please Input Necessary Data !")
+        #         else:
+        #             st.error("Please Input Necessary Data !")
 
 
 if __name__ == "__main__":
