@@ -142,19 +142,6 @@ def mobile_autoplay_audio(file_path: str, playback_rate=2.0):
     audio_place.empty()
 
 
-# Set page configuration to run as a PWA on both Chrome and Safari
-st.set_page_config(
-    page_title="Your App Title",
-    page_icon=":icon:",
-    layout="wide",
-    initial_sidebar_state="expanded",
-    mobile_app=True,
-)
-
-# Usage example
-autoplay_audio("path/to/your/audio.mp3", playback_rate=2.0)
-
-
 def webrtc_init():
     global model
 
