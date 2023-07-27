@@ -104,7 +104,8 @@ def main():
         st.write("1. data type을 image/video 중에 선택해주세요.\n")
         st.write("2. browse file을 누르거나 드래그를 통해 테스트할 파일을 올려주세요.\n")
         st.write("3. start infernce를 눌러 결과를 확인해보세요.\n")
-        st.write("\nmade by : Boostcamp AITech 5기 CV-10조 Bro3sis1 Team")
+        st.write("\n\n\n")
+        st.write("made by : Boostcamp AITech 5기 CV-10조 Bro3sis1 Team")
 
 
 if __name__ == "__main__":
