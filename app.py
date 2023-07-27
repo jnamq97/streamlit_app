@@ -26,7 +26,7 @@ def main():
 
     with st.sidebar:
         mode = option_menu(
-            "Main Menu",
+            "APAS (Advanced Pedestrian Assistance System)",
             ["Online", "Offline"],
             icons=["house", "bi bi-robot"],
             menu_icon="cast",
