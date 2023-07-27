@@ -26,22 +26,11 @@ def main():
 
     with st.sidebar:
         mode = option_menu(
-            "Menu",
+            "Main Menu",
             ["Online", "Offline"],
             icons=["house", "bi bi-robot"],
-            menu_icon="app-indicator",
-            default_index=0,
-            styles={
-                "container": {"padding": "4!important", "background-color": "#fafafa"},
-                "icon": {"color": "black", "font-size": "25px"},
-                "nav-link": {
-                    "font-size": "16px",
-                    "text-align": "left",
-                    "margin": "0px",
-                    "--hover-color": "#fafafa",
-                },
-                "nav-link-selected": {"background-color": "#08c7b4"},
-            },
+            menu_icon="cast",
+            default_index=1,
         )
 
     if mode == "Online":
