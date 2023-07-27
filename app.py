@@ -93,8 +93,9 @@ def main():
     elif mode == "How to Use":
         st.subheader("APAS를 소개합니다 ❗️")
         st.write(
-            "APAS(Advanced Pedestrian Assistance System)는 시각 장애인을 대상으로 개발된 보행 보조 시스템입니다. "
+            "APAS(Advanced Pedestrian Assistance System)는 시각 장애인을 대상으로 개발된 보행 보조 시스템입니다.\n"
         )
+        st.write("made by : BoostcampAITech 5기 CV-10조 Bro3sis1팀")
         st.subheader("1️⃣ Online mode란?")
         st.write("실시간 보행 보조를 실행하는 모드입니다. 사용자의 카메라 영상을 기반으로 위험을 감지해 음성으로 경고를 줍니다.\n")
         st.write("1. select device를 통해 연결된 카메라를 선택해주세요.\n")
