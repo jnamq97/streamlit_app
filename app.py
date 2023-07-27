@@ -8,6 +8,7 @@ from webcam.socket.webcam_server import main as webcam_main
 from webcam.webrtc.webcam_webrtc import create_video_frame_callback, webrtc_init
 from streamlit_webrtc import webrtc_streamer
 import sys
+from streamlit_option_menu import option_menu
 
 # from yolo_tracking.examples.track import *
 
@@ -23,9 +24,25 @@ def main():
     st.subheader("CV-10 : Bro3Sis1 Team")
     first_call = True
 
-    mode = st.sidebar.selectbox(
-        "Please selecet Inference Mode !", ("Online", "Offline")
-    )
+    with st.sidebar:
+        mode = option_menu(
+            "Menu",
+            ["페이지1", "페이지2", "페이지3"],
+            icons=["house", "kanban", "bi bi-robot"],
+            menu_icon="app-indicator",
+            default_index=0,
+            styles={
+                "container": {"padding": "4!important", "background-color": "#fafafa"},
+                "icon": {"color": "black", "font-size": "25px"},
+                "nav-link": {
+                    "font-size": "16px",
+                    "text-align": "left",
+                    "margin": "0px",
+                    "--hover-color": "#fafafa",
+                },
+                "nav-link-selected": {"background-color": "#08c7b4"},
+            },
+        )
 
     if mode == "Online":
         st.header("Online Inference Mode")

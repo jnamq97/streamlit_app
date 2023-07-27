@@ -155,7 +155,7 @@ def webrtc_init():
                     text_place.warning("주의하세요 !")
                     lv, dir = WARNING_LEVELS[str(danger_level)]
                     audio_file_path = f"/mount/src/streamlit_app/webcam/webrtc/tts/{danger_class}_{lv}_{dir}.mp3"
-                    mobile_autoplay_audio(audio_file_path)
+                    autoplay_audio(audio_file_path)
                 else:
                     text_place.success("안전합니다 !")
             else:
