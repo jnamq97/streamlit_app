@@ -27,8 +27,8 @@ def main():
     with st.sidebar:
         mode = option_menu(
             "APAS",
-            ["Online", "Offline"],
-            icons=["house", "bi bi-robot"],
+            ["Online", "Offline", "How to Use"],
+            icons=["house", "bi bi-robot", "gear"],
             menu_icon="cast",
             default_index=1,
         )
