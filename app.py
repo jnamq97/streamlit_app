@@ -29,9 +29,9 @@ def main():
             ["Online", "Offline", "How to Use"],
             icons=["house", "bi bi-robot", "gear"],
             menu_icon="cast",
-            default_index=1,
+            default_index=0,
         )
-
+    header_place = st.empty()
     if mode == "Online":
         st.subheader("APAS (Advanced Pedestrian Assistance System)")
         st.header("Online Inference Mode")
