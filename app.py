@@ -93,13 +93,15 @@ def main():
     elif mode == "How to Use":
         st.header("❓ How to Use")
         st.subheader("APAS를 소개합니다 !")
-        st.text(
+        st.write(
             "APAS(Advanced Pedestrian Assistance System)는 시각 장애인을 대상으로 개발된 보행 보조 시스템입니다. "
         )
         st.subheader("Online mode란?")
-        st.text()
+        st.write(
+            "Start 버튼을 누르면 실시간 보행 보조를 실행합니다. 사용자의 카메라 영상을 기반으로 위험을 감지해 음성으로 경고를 줍니다. "
+        )
         st.subheader("Offline mode란?")
-        st.text()
+        st.write("보행 상황 이미지나 영상을 업로드하여 APAS의 성능을 시험해보세요.")
 
 
 if __name__ == "__main__":
