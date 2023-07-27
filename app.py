@@ -20,7 +20,6 @@ def show_app(image_placeholder, img):
 def main():
     # os.environ["yolo_tracking"] = st.secrets["PATH"]
 
-    st.subheader("APAS (Advanced Pedestrian Assistance System)")
     # st.subheader("CV-10 : Bro3Sis1 Team")
     first_call = True
 
@@ -34,12 +33,14 @@ def main():
         )
 
     if mode == "Online":
+        st.subheader("APAS (Advanced Pedestrian Assistance System)")
         st.header("Online Inference Mode")
         with st.spinner("webcam"):
             # if webcam_button:
             webrtc_init()
 
     elif mode == "Offline":
+        st.subheader("APAS (Advanced Pedestrian Assistance System)")
         st.header("Offline Inference Mode")
         data_type = st.selectbox("Please select data type !", ("Image", "Video"))
         # upload data
@@ -89,6 +90,8 @@ def main():
 
         #         else:
         #             st.error("Please Input Necessary Data !")
+    elif mode == "How to Use":
+        st.header("How to Use ?")
 
 
 if __name__ == "__main__":
