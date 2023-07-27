@@ -27,8 +27,8 @@ def main():
     with st.sidebar:
         mode = option_menu(
             "Menu",
-            ["페이지1", "페이지2", "페이지3"],
-            icons=["house", "kanban", "bi bi-robot"],
+            ["Online", "Offline"],
+            icons=["house", "bi bi-robot"],
             menu_icon="app-indicator",
             default_index=0,
             styles={
