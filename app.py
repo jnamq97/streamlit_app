@@ -91,7 +91,15 @@ def main():
         #         else:
         #             st.error("Please Input Necessary Data !")
     elif mode == "How to Use":
-        st.header("How to Use ?")
+        st.header("❓ How to Use")
+        st.subheader("APAS를 소개합니다 !")
+        st.text(
+            "APAS(Advanced Pedestrian Assistance System)는 시각 장애인을 대상으로 개발된 보행 보조 시스템입니다. "
+        )
+        st.subheader("Online mode란?")
+        st.text()
+        st.subheader("Offline mode란?")
+        st.text()
 
 
 if __name__ == "__main__":
